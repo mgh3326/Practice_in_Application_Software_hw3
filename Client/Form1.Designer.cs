@@ -30,8 +30,8 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxIP = new System.Windows.Forms.TextBox();
+            this.textBoxPort = new System.Windows.Forms.TextBox();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -47,25 +47,25 @@
             this.pictureBoxMypage = new System.Windows.Forms.PictureBox();
             this.panelHome = new System.Windows.Forms.Panel();
             this.panelSearch = new System.Windows.Forms.Panel();
-            this.textBoxSearch = new System.Windows.Forms.TextBox();
-            this.buttonSearch = new System.Windows.Forms.Button();
             this.ListBoxSearch = new System.Windows.Forms.ListBox();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.panelUpload = new System.Windows.Forms.Panel();
-            this.buttonFindPicture = new System.Windows.Forms.Button();
-            this.textBoxPicturepath = new System.Windows.Forms.TextBox();
-            this.pictureBoxUploadPicture = new System.Windows.Forms.PictureBox();
-            this.textBoxUpload = new System.Windows.Forms.TextBox();
             this.buttonUpload = new System.Windows.Forms.Button();
+            this.textBoxUpload = new System.Windows.Forms.TextBox();
+            this.pictureBoxUploadPicture = new System.Windows.Forms.PictureBox();
+            this.textBoxPicturepath = new System.Windows.Forms.TextBox();
+            this.buttonFindPicture = new System.Windows.Forms.Button();
             this.panelMypage = new System.Windows.Forms.Panel();
-            this.pictureBoxProfileImage = new System.Windows.Forms.PictureBox();
-            this.labelPostCounting = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.buttonProfileEdit = new System.Windows.Forms.Button();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.buttonViewType1 = new System.Windows.Forms.Button();
-            this.buttonViewType2 = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.buttonViewType2 = new System.Windows.Forms.Button();
+            this.buttonViewType1 = new System.Windows.Forms.Button();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.buttonProfileEdit = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.labelPostCounting = new System.Windows.Forms.Label();
+            this.pictureBoxProfileImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHome)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSerach)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUpload)).BeginInit();
@@ -95,19 +95,19 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Port : ";
             // 
-            // textBox1
+            // textBoxIP
             // 
-            this.textBox1.Location = new System.Drawing.Point(117, 65);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 25);
-            this.textBox1.TabIndex = 2;
+            this.textBoxIP.Location = new System.Drawing.Point(117, 65);
+            this.textBoxIP.Name = "textBoxIP";
+            this.textBoxIP.Size = new System.Drawing.Size(100, 25);
+            this.textBoxIP.TabIndex = 2;
             // 
-            // textBox2
+            // textBoxPort
             // 
-            this.textBox2.Location = new System.Drawing.Point(117, 98);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 25);
-            this.textBox2.TabIndex = 3;
+            this.textBoxPort.Location = new System.Drawing.Point(117, 98);
+            this.textBoxPort.Name = "textBoxPort";
+            this.textBoxPort.Size = new System.Drawing.Size(100, 25);
+            this.textBoxPort.TabIndex = 3;
             // 
             // buttonConnect
             // 
@@ -117,6 +117,7 @@
             this.buttonConnect.TabIndex = 4;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
+            this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
             // label3
             // 
@@ -262,12 +263,14 @@
             this.panelSearch.TabIndex = 0;
             this.panelSearch.Visible = false;
             // 
-            // textBoxSearch
+            // ListBoxSearch
             // 
-            this.textBoxSearch.Location = new System.Drawing.Point(25, 38);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(132, 25);
-            this.textBoxSearch.TabIndex = 0;
+            this.ListBoxSearch.FormattingEnabled = true;
+            this.ListBoxSearch.ItemHeight = 15;
+            this.ListBoxSearch.Location = new System.Drawing.Point(25, 92);
+            this.ListBoxSearch.Name = "ListBoxSearch";
+            this.ListBoxSearch.Size = new System.Drawing.Size(223, 184);
+            this.ListBoxSearch.TabIndex = 2;
             // 
             // buttonSearch
             // 
@@ -278,14 +281,12 @@
             this.buttonSearch.Text = "찾기";
             this.buttonSearch.UseVisualStyleBackColor = true;
             // 
-            // ListBoxSearch
+            // textBoxSearch
             // 
-            this.ListBoxSearch.FormattingEnabled = true;
-            this.ListBoxSearch.ItemHeight = 15;
-            this.ListBoxSearch.Location = new System.Drawing.Point(25, 92);
-            this.ListBoxSearch.Name = "ListBoxSearch";
-            this.ListBoxSearch.Size = new System.Drawing.Size(223, 184);
-            this.ListBoxSearch.TabIndex = 2;
+            this.textBoxSearch.Location = new System.Drawing.Point(25, 38);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(132, 25);
+            this.textBoxSearch.TabIndex = 0;
             // 
             // panelUpload
             // 
@@ -300,29 +301,14 @@
             this.panelUpload.TabIndex = 18;
             this.panelUpload.Visible = false;
             // 
-            // buttonFindPicture
+            // buttonUpload
             // 
-            this.buttonFindPicture.Location = new System.Drawing.Point(16, 22);
-            this.buttonFindPicture.Name = "buttonFindPicture";
-            this.buttonFindPicture.Size = new System.Drawing.Size(75, 23);
-            this.buttonFindPicture.TabIndex = 0;
-            this.buttonFindPicture.Text = "찾기";
-            this.buttonFindPicture.UseVisualStyleBackColor = true;
-            // 
-            // textBoxPicturepath
-            // 
-            this.textBoxPicturepath.Location = new System.Drawing.Point(97, 22);
-            this.textBoxPicturepath.Name = "textBoxPicturepath";
-            this.textBoxPicturepath.Size = new System.Drawing.Size(160, 25);
-            this.textBoxPicturepath.TabIndex = 1;
-            // 
-            // pictureBoxUploadPicture
-            // 
-            this.pictureBoxUploadPicture.Location = new System.Drawing.Point(16, 53);
-            this.pictureBoxUploadPicture.Name = "pictureBoxUploadPicture";
-            this.pictureBoxUploadPicture.Size = new System.Drawing.Size(241, 101);
-            this.pictureBoxUploadPicture.TabIndex = 2;
-            this.pictureBoxUploadPicture.TabStop = false;
+            this.buttonUpload.Location = new System.Drawing.Point(16, 260);
+            this.buttonUpload.Name = "buttonUpload";
+            this.buttonUpload.Size = new System.Drawing.Size(241, 23);
+            this.buttonUpload.TabIndex = 4;
+            this.buttonUpload.Text = "게시물 등록하기";
+            this.buttonUpload.UseVisualStyleBackColor = true;
             // 
             // textBoxUpload
             // 
@@ -332,14 +318,29 @@
             this.textBoxUpload.Size = new System.Drawing.Size(241, 87);
             this.textBoxUpload.TabIndex = 3;
             // 
-            // buttonUpload
+            // pictureBoxUploadPicture
             // 
-            this.buttonUpload.Location = new System.Drawing.Point(16, 260);
-            this.buttonUpload.Name = "buttonUpload";
-            this.buttonUpload.Size = new System.Drawing.Size(241, 23);
-            this.buttonUpload.TabIndex = 4;
-            this.buttonUpload.Text = "게시물 등록하기";
-            this.buttonUpload.UseVisualStyleBackColor = true;
+            this.pictureBoxUploadPicture.Location = new System.Drawing.Point(16, 53);
+            this.pictureBoxUploadPicture.Name = "pictureBoxUploadPicture";
+            this.pictureBoxUploadPicture.Size = new System.Drawing.Size(241, 101);
+            this.pictureBoxUploadPicture.TabIndex = 2;
+            this.pictureBoxUploadPicture.TabStop = false;
+            // 
+            // textBoxPicturepath
+            // 
+            this.textBoxPicturepath.Location = new System.Drawing.Point(97, 22);
+            this.textBoxPicturepath.Name = "textBoxPicturepath";
+            this.textBoxPicturepath.Size = new System.Drawing.Size(160, 25);
+            this.textBoxPicturepath.TabIndex = 1;
+            // 
+            // buttonFindPicture
+            // 
+            this.buttonFindPicture.Location = new System.Drawing.Point(16, 22);
+            this.buttonFindPicture.Name = "buttonFindPicture";
+            this.buttonFindPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonFindPicture.TabIndex = 0;
+            this.buttonFindPicture.Text = "찾기";
+            this.buttonFindPicture.UseVisualStyleBackColor = true;
             // 
             // panelMypage
             // 
@@ -358,56 +359,19 @@
             this.panelMypage.TabIndex = 19;
             this.panelMypage.Visible = false;
             // 
-            // pictureBoxProfileImage
+            // panel1
             // 
-            this.pictureBoxProfileImage.Location = new System.Drawing.Point(9, 20);
-            this.pictureBoxProfileImage.Name = "pictureBoxProfileImage";
-            this.pictureBoxProfileImage.Size = new System.Drawing.Size(100, 68);
-            this.pictureBoxProfileImage.TabIndex = 0;
-            this.pictureBoxProfileImage.TabStop = false;
+            this.panel1.Location = new System.Drawing.Point(3, 224);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.TabIndex = 8;
             // 
-            // labelPostCounting
+            // flowLayoutPanel1
             // 
-            this.labelPostCounting.AutoSize = true;
-            this.labelPostCounting.Location = new System.Drawing.Point(170, 20);
-            this.labelPostCounting.Name = "labelPostCounting";
-            this.labelPostCounting.Size = new System.Drawing.Size(15, 15);
-            this.labelPostCounting.TabIndex = 1;
-            this.labelPostCounting.Text = "0";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(151, 47);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(52, 15);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "게시물";
-            // 
-            // buttonProfileEdit
-            // 
-            this.buttonProfileEdit.Location = new System.Drawing.Point(133, 65);
-            this.buttonProfileEdit.Name = "buttonProfileEdit";
-            this.buttonProfileEdit.Size = new System.Drawing.Size(95, 23);
-            this.buttonProfileEdit.TabIndex = 3;
-            this.buttonProfileEdit.Text = "프로필수정";
-            this.buttonProfileEdit.UseVisualStyleBackColor = true;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(21, 102);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(194, 25);
-            this.textBox5.TabIndex = 4;
-            // 
-            // buttonViewType1
-            // 
-            this.buttonViewType1.Location = new System.Drawing.Point(9, 148);
-            this.buttonViewType1.Name = "buttonViewType1";
-            this.buttonViewType1.Size = new System.Drawing.Size(75, 23);
-            this.buttonViewType1.TabIndex = 5;
-            this.buttonViewType1.Text = "바둑판";
-            this.buttonViewType1.UseVisualStyleBackColor = true;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(173, 205);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel1.TabIndex = 7;
             // 
             // buttonViewType2
             // 
@@ -418,19 +382,56 @@
             this.buttonViewType2.Text = "리스트";
             this.buttonViewType2.UseVisualStyleBackColor = true;
             // 
-            // flowLayoutPanel1
+            // buttonViewType1
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(173, 205);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
-            this.flowLayoutPanel1.TabIndex = 7;
+            this.buttonViewType1.Location = new System.Drawing.Point(9, 148);
+            this.buttonViewType1.Name = "buttonViewType1";
+            this.buttonViewType1.Size = new System.Drawing.Size(75, 23);
+            this.buttonViewType1.TabIndex = 5;
+            this.buttonViewType1.Text = "바둑판";
+            this.buttonViewType1.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // textBox5
             // 
-            this.panel1.Location = new System.Drawing.Point(3, 224);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 100);
-            this.panel1.TabIndex = 8;
+            this.textBox5.Location = new System.Drawing.Point(21, 102);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(194, 25);
+            this.textBox5.TabIndex = 4;
+            // 
+            // buttonProfileEdit
+            // 
+            this.buttonProfileEdit.Location = new System.Drawing.Point(133, 65);
+            this.buttonProfileEdit.Name = "buttonProfileEdit";
+            this.buttonProfileEdit.Size = new System.Drawing.Size(95, 23);
+            this.buttonProfileEdit.TabIndex = 3;
+            this.buttonProfileEdit.Text = "프로필수정";
+            this.buttonProfileEdit.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(151, 47);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(52, 15);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "게시물";
+            // 
+            // labelPostCounting
+            // 
+            this.labelPostCounting.AutoSize = true;
+            this.labelPostCounting.Location = new System.Drawing.Point(170, 20);
+            this.labelPostCounting.Name = "labelPostCounting";
+            this.labelPostCounting.Size = new System.Drawing.Size(15, 15);
+            this.labelPostCounting.TabIndex = 1;
+            this.labelPostCounting.Text = "0";
+            // 
+            // pictureBoxProfileImage
+            // 
+            this.pictureBoxProfileImage.Location = new System.Drawing.Point(9, 20);
+            this.pictureBoxProfileImage.Name = "pictureBoxProfileImage";
+            this.pictureBoxProfileImage.Size = new System.Drawing.Size(100, 68);
+            this.pictureBoxProfileImage.TabIndex = 0;
+            this.pictureBoxProfileImage.TabStop = false;
             // 
             // Form1
             // 
@@ -454,8 +455,8 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonConnect);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxPort);
+            this.Controls.Add(this.textBoxIP);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
@@ -481,8 +482,8 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxIP;
+        private System.Windows.Forms.TextBox textBoxPort;
         private System.Windows.Forms.Button buttonConnect;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
