@@ -30,15 +30,16 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.textBox_IP = new System.Windows.Forms.TextBox();
+            this.button_Start = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.MemberList = new System.Windows.Forms.ListView();
+            this.TextBox_ServerLog = new System.Windows.Forms.TextBox();
             this.columnHeaderIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderPassword = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.textBox_PortNumber = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -59,21 +60,21 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Port : ";
             // 
-            // textBox1
+            // textBox_IP
             // 
-            this.textBox1.Location = new System.Drawing.Point(49, 22);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(287, 25);
-            this.textBox1.TabIndex = 2;
+            this.textBox_IP.Location = new System.Drawing.Point(49, 22);
+            this.textBox_IP.Name = "textBox_IP";
+            this.textBox_IP.Size = new System.Drawing.Size(287, 25);
+            this.textBox_IP.TabIndex = 2;
             // 
-            // button1
+            // button_Start
             // 
-            this.button1.Location = new System.Drawing.Point(397, 22);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Start";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_Start.Location = new System.Drawing.Point(503, 25);
+            this.button_Start.Name = "button_Start";
+            this.button_Start.Size = new System.Drawing.Size(75, 23);
+            this.button_Start.TabIndex = 3;
+            this.button_Start.Text = "Start";
+            this.button_Start.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -93,25 +94,27 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Server Log";
             // 
-            // listView1
+            // MemberList
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.MemberList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderIndex,
             this.columnHeaderID,
             this.columnHeaderPassword});
-            this.listView1.Location = new System.Drawing.Point(12, 85);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(219, 258);
-            this.listView1.TabIndex = 6;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.MemberList.Location = new System.Drawing.Point(31, 85);
+            this.MemberList.Name = "MemberList";
+            this.MemberList.Size = new System.Drawing.Size(230, 267);
+            this.MemberList.TabIndex = 6;
+            this.MemberList.UseCompatibleStateImageBehavior = false;
+            this.MemberList.View = System.Windows.Forms.View.Details;
             // 
-            // textBox2
+            // TextBox_ServerLog
             // 
-            this.textBox2.Location = new System.Drawing.Point(256, 85);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(294, 258);
-            this.textBox2.TabIndex = 7;
+            this.TextBox_ServerLog.Location = new System.Drawing.Point(284, 85);
+            this.TextBox_ServerLog.Multiline = true;
+            this.TextBox_ServerLog.Name = "TextBox_ServerLog";
+            this.TextBox_ServerLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TextBox_ServerLog.Size = new System.Drawing.Size(294, 258);
+            this.TextBox_ServerLog.TabIndex = 7;
             // 
             // columnHeaderIndex
             // 
@@ -124,18 +127,27 @@
             // columnHeaderPassword
             // 
             this.columnHeaderPassword.Text = "Password";
+            this.columnHeaderPassword.Width = 98;
+            // 
+            // textBox_PortNumber
+            // 
+            this.textBox_PortNumber.Location = new System.Drawing.Point(397, 22);
+            this.textBox_PortNumber.Name = "textBox_PortNumber";
+            this.textBox_PortNumber.Size = new System.Drawing.Size(100, 25);
+            this.textBox_PortNumber.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.textBox_PortNumber);
+            this.Controls.Add(this.TextBox_ServerLog);
+            this.Controls.Add(this.MemberList);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.button_Start);
+            this.Controls.Add(this.textBox_IP);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
@@ -150,15 +162,16 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox_IP;
+        private System.Windows.Forms.Button button_Start;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ListView MemberList;
+        private System.Windows.Forms.TextBox TextBox_ServerLog;
         private System.Windows.Forms.ColumnHeader columnHeaderIndex;
         private System.Windows.Forms.ColumnHeader columnHeaderID;
         private System.Windows.Forms.ColumnHeader columnHeaderPassword;
+        private System.Windows.Forms.TextBox textBox_PortNumber;
     }
 }
 
