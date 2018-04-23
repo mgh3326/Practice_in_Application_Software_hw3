@@ -50,7 +50,7 @@ namespace Server
                  server = new TcpListener(locAddr, Int32.Parse(textBox_PortNumber.Text));
                 //server = new TcpListener(IPAddress.Parse("127.0.0.1"), 13002);
                 server.Start();
-                TextBox_ServerLog.Text += "\nConnected";
+                TextBox_ServerLog.Text += "\n\nConnected";
 
                 //listening loop // 여기 무한 루프라서 안 되네
                 while (true)
@@ -106,7 +106,7 @@ namespace Server
 
                 button_Start.Text = "Stop";
                 button_Start.ForeColor = Color.Red;
-                TextBox_ServerLog.Text = "Server 기다리는 중..";
+                TextBox_ServerLog.Text = "Server 기다리는 중..\n";
                 item = MemberList.Items.Add("1");//여기서 파일 받아오면 될것 같다.
                 item.SubItems.Add("root");
                 item.SubItems.Add("password");
