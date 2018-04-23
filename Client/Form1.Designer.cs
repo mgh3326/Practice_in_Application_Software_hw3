@@ -41,14 +41,40 @@
             this.buttonLogIn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonJoin = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.pictureBoxHome = new System.Windows.Forms.PictureBox();
+            this.pictureBoxSerach = new System.Windows.Forms.PictureBox();
+            this.pictureBoxUpload = new System.Windows.Forms.PictureBox();
+            this.pictureBoxMypage = new System.Windows.Forms.PictureBox();
+            this.panelHome = new System.Windows.Forms.Panel();
+            this.panelSearch = new System.Windows.Forms.Panel();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.ListBoxSearch = new System.Windows.Forms.ListBox();
+            this.panelUpload = new System.Windows.Forms.Panel();
+            this.buttonFindPicture = new System.Windows.Forms.Button();
+            this.textBoxPicturepath = new System.Windows.Forms.TextBox();
+            this.pictureBoxUploadPicture = new System.Windows.Forms.PictureBox();
+            this.textBoxUpload = new System.Windows.Forms.TextBox();
+            this.buttonUpload = new System.Windows.Forms.Button();
+            this.panelMypage = new System.Windows.Forms.Panel();
+            this.pictureBoxProfileImage = new System.Windows.Forms.PictureBox();
+            this.labelPostCounting = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.buttonProfileEdit = new System.Windows.Forms.Button();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.buttonViewType1 = new System.Windows.Forms.Button();
+            this.buttonViewType2 = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHome)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSerach)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUpload)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMypage)).BeginInit();
+            this.panelSearch.SuspendLayout();
+            this.panelUpload.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUploadPicture)).BeginInit();
+            this.panelMypage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfileImage)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -165,55 +191,260 @@
             this.buttonJoin.Text = "회원가입";
             this.buttonJoin.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // pictureBoxHome
             // 
-            this.pictureBox1.Image = global::Client.Properties.Resources.button_home;
-            this.pictureBox1.Location = new System.Drawing.Point(246, 363);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 13;
-            this.pictureBox1.TabStop = false;
+            this.pictureBoxHome.Image = global::Client.Properties.Resources.button_home;
+            this.pictureBoxHome.Location = new System.Drawing.Point(346, 363);
+            this.pictureBoxHome.Name = "pictureBoxHome";
+            this.pictureBoxHome.Size = new System.Drawing.Size(65, 50);
+            this.pictureBoxHome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxHome.TabIndex = 13;
+            this.pictureBoxHome.TabStop = false;
+            this.pictureBoxHome.Click += new System.EventHandler(this.pictureBoxHome_Click);
+            this.pictureBoxHome.MouseEnter += new System.EventHandler(this.pictureBoxHome_MouseEnter);
+            this.pictureBoxHome.MouseLeave += new System.EventHandler(this.pictureBoxHome_MouseLeave);
             // 
-            // pictureBox2
+            // pictureBoxSerach
             // 
-            this.pictureBox2.Image = global::Client.Properties.Resources.button_search;
-            this.pictureBox2.Location = new System.Drawing.Point(317, 363);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(65, 50);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 14;
-            this.pictureBox2.TabStop = false;
+            this.pictureBoxSerach.Image = global::Client.Properties.Resources.button_search;
+            this.pictureBoxSerach.Location = new System.Drawing.Point(417, 363);
+            this.pictureBoxSerach.Name = "pictureBoxSerach";
+            this.pictureBoxSerach.Size = new System.Drawing.Size(65, 50);
+            this.pictureBoxSerach.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxSerach.TabIndex = 14;
+            this.pictureBoxSerach.TabStop = false;
+            this.pictureBoxSerach.Click += new System.EventHandler(this.pictureBoxSerach_Click);
+            this.pictureBoxSerach.MouseEnter += new System.EventHandler(this.pictureBoxSerach_MouseEnter);
+            this.pictureBoxSerach.MouseLeave += new System.EventHandler(this.pictureBoxSerach_MouseLeave);
             // 
-            // pictureBox3
+            // pictureBoxUpload
             // 
-            this.pictureBox3.Image = global::Client.Properties.Resources.button_upload;
-            this.pictureBox3.Location = new System.Drawing.Point(388, 363);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(65, 50);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 15;
-            this.pictureBox3.TabStop = false;
+            this.pictureBoxUpload.Image = global::Client.Properties.Resources.button_upload;
+            this.pictureBoxUpload.Location = new System.Drawing.Point(488, 363);
+            this.pictureBoxUpload.Name = "pictureBoxUpload";
+            this.pictureBoxUpload.Size = new System.Drawing.Size(65, 50);
+            this.pictureBoxUpload.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxUpload.TabIndex = 15;
+            this.pictureBoxUpload.TabStop = false;
+            this.pictureBoxUpload.Click += new System.EventHandler(this.pictureBoxUpload_Click);
+            this.pictureBoxUpload.MouseEnter += new System.EventHandler(this.pictureBoxUpload_MouseEnter);
+            this.pictureBoxUpload.MouseLeave += new System.EventHandler(this.pictureBoxUpload_MouseLeave);
             // 
-            // pictureBox4
+            // pictureBoxMypage
             // 
-            this.pictureBox4.Image = global::Client.Properties.Resources.button_mypage;
-            this.pictureBox4.Location = new System.Drawing.Point(459, 363);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(65, 50);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 16;
-            this.pictureBox4.TabStop = false;
+            this.pictureBoxMypage.Image = global::Client.Properties.Resources.button_mypage;
+            this.pictureBoxMypage.Location = new System.Drawing.Point(559, 363);
+            this.pictureBoxMypage.Name = "pictureBoxMypage";
+            this.pictureBoxMypage.Size = new System.Drawing.Size(65, 50);
+            this.pictureBoxMypage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxMypage.TabIndex = 16;
+            this.pictureBoxMypage.TabStop = false;
+            this.pictureBoxMypage.Click += new System.EventHandler(this.pictureBoxMypage_Click);
+            this.pictureBoxMypage.MouseEnter += new System.EventHandler(this.pictureBoxMypage_MouseEnter);
+            this.pictureBoxMypage.MouseLeave += new System.EventHandler(this.pictureBoxMypage_MouseLeave);
+            // 
+            // panelHome
+            // 
+            this.panelHome.Location = new System.Drawing.Point(346, 57);
+            this.panelHome.Name = "panelHome";
+            this.panelHome.Size = new System.Drawing.Size(278, 289);
+            this.panelHome.TabIndex = 17;
+            this.panelHome.Visible = false;
+            // 
+            // panelSearch
+            // 
+            this.panelSearch.Controls.Add(this.ListBoxSearch);
+            this.panelSearch.Controls.Add(this.buttonSearch);
+            this.panelSearch.Controls.Add(this.textBoxSearch);
+            this.panelSearch.Location = new System.Drawing.Point(348, 57);
+            this.panelSearch.Name = "panelSearch";
+            this.panelSearch.Size = new System.Drawing.Size(277, 298);
+            this.panelSearch.TabIndex = 0;
+            this.panelSearch.Visible = false;
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Location = new System.Drawing.Point(25, 38);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(132, 25);
+            this.textBoxSearch.TabIndex = 0;
+            // 
+            // buttonSearch
+            // 
+            this.buttonSearch.Location = new System.Drawing.Point(163, 38);
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.Size = new System.Drawing.Size(75, 23);
+            this.buttonSearch.TabIndex = 1;
+            this.buttonSearch.Text = "찾기";
+            this.buttonSearch.UseVisualStyleBackColor = true;
+            // 
+            // ListBoxSearch
+            // 
+            this.ListBoxSearch.FormattingEnabled = true;
+            this.ListBoxSearch.ItemHeight = 15;
+            this.ListBoxSearch.Location = new System.Drawing.Point(25, 92);
+            this.ListBoxSearch.Name = "ListBoxSearch";
+            this.ListBoxSearch.Size = new System.Drawing.Size(223, 184);
+            this.ListBoxSearch.TabIndex = 2;
+            // 
+            // panelUpload
+            // 
+            this.panelUpload.Controls.Add(this.buttonUpload);
+            this.panelUpload.Controls.Add(this.textBoxUpload);
+            this.panelUpload.Controls.Add(this.pictureBoxUploadPicture);
+            this.panelUpload.Controls.Add(this.textBoxPicturepath);
+            this.panelUpload.Controls.Add(this.buttonFindPicture);
+            this.panelUpload.Location = new System.Drawing.Point(348, 57);
+            this.panelUpload.Name = "panelUpload";
+            this.panelUpload.Size = new System.Drawing.Size(277, 297);
+            this.panelUpload.TabIndex = 18;
+            this.panelUpload.Visible = false;
+            // 
+            // buttonFindPicture
+            // 
+            this.buttonFindPicture.Location = new System.Drawing.Point(16, 22);
+            this.buttonFindPicture.Name = "buttonFindPicture";
+            this.buttonFindPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonFindPicture.TabIndex = 0;
+            this.buttonFindPicture.Text = "찾기";
+            this.buttonFindPicture.UseVisualStyleBackColor = true;
+            // 
+            // textBoxPicturepath
+            // 
+            this.textBoxPicturepath.Location = new System.Drawing.Point(97, 22);
+            this.textBoxPicturepath.Name = "textBoxPicturepath";
+            this.textBoxPicturepath.Size = new System.Drawing.Size(160, 25);
+            this.textBoxPicturepath.TabIndex = 1;
+            // 
+            // pictureBoxUploadPicture
+            // 
+            this.pictureBoxUploadPicture.Location = new System.Drawing.Point(16, 53);
+            this.pictureBoxUploadPicture.Name = "pictureBoxUploadPicture";
+            this.pictureBoxUploadPicture.Size = new System.Drawing.Size(241, 101);
+            this.pictureBoxUploadPicture.TabIndex = 2;
+            this.pictureBoxUploadPicture.TabStop = false;
+            // 
+            // textBoxUpload
+            // 
+            this.textBoxUpload.Location = new System.Drawing.Point(16, 160);
+            this.textBoxUpload.Multiline = true;
+            this.textBoxUpload.Name = "textBoxUpload";
+            this.textBoxUpload.Size = new System.Drawing.Size(241, 87);
+            this.textBoxUpload.TabIndex = 3;
+            // 
+            // buttonUpload
+            // 
+            this.buttonUpload.Location = new System.Drawing.Point(16, 260);
+            this.buttonUpload.Name = "buttonUpload";
+            this.buttonUpload.Size = new System.Drawing.Size(241, 23);
+            this.buttonUpload.TabIndex = 4;
+            this.buttonUpload.Text = "게시물 등록하기";
+            this.buttonUpload.UseVisualStyleBackColor = true;
+            // 
+            // panelMypage
+            // 
+            this.panelMypage.Controls.Add(this.panel1);
+            this.panelMypage.Controls.Add(this.flowLayoutPanel1);
+            this.panelMypage.Controls.Add(this.buttonViewType2);
+            this.panelMypage.Controls.Add(this.buttonViewType1);
+            this.panelMypage.Controls.Add(this.textBox5);
+            this.panelMypage.Controls.Add(this.buttonProfileEdit);
+            this.panelMypage.Controls.Add(this.label8);
+            this.panelMypage.Controls.Add(this.labelPostCounting);
+            this.panelMypage.Controls.Add(this.pictureBoxProfileImage);
+            this.panelMypage.Location = new System.Drawing.Point(581, 205);
+            this.panelMypage.Name = "panelMypage";
+            this.panelMypage.Size = new System.Drawing.Size(234, 337);
+            this.panelMypage.TabIndex = 19;
+            this.panelMypage.Visible = false;
+            // 
+            // pictureBoxProfileImage
+            // 
+            this.pictureBoxProfileImage.Location = new System.Drawing.Point(9, 20);
+            this.pictureBoxProfileImage.Name = "pictureBoxProfileImage";
+            this.pictureBoxProfileImage.Size = new System.Drawing.Size(100, 68);
+            this.pictureBoxProfileImage.TabIndex = 0;
+            this.pictureBoxProfileImage.TabStop = false;
+            // 
+            // labelPostCounting
+            // 
+            this.labelPostCounting.AutoSize = true;
+            this.labelPostCounting.Location = new System.Drawing.Point(170, 20);
+            this.labelPostCounting.Name = "labelPostCounting";
+            this.labelPostCounting.Size = new System.Drawing.Size(15, 15);
+            this.labelPostCounting.TabIndex = 1;
+            this.labelPostCounting.Text = "0";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(151, 47);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(52, 15);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "게시물";
+            // 
+            // buttonProfileEdit
+            // 
+            this.buttonProfileEdit.Location = new System.Drawing.Point(133, 65);
+            this.buttonProfileEdit.Name = "buttonProfileEdit";
+            this.buttonProfileEdit.Size = new System.Drawing.Size(95, 23);
+            this.buttonProfileEdit.TabIndex = 3;
+            this.buttonProfileEdit.Text = "프로필수정";
+            this.buttonProfileEdit.UseVisualStyleBackColor = true;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(21, 102);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(194, 25);
+            this.textBox5.TabIndex = 4;
+            // 
+            // buttonViewType1
+            // 
+            this.buttonViewType1.Location = new System.Drawing.Point(9, 148);
+            this.buttonViewType1.Name = "buttonViewType1";
+            this.buttonViewType1.Size = new System.Drawing.Size(75, 23);
+            this.buttonViewType1.TabIndex = 5;
+            this.buttonViewType1.Text = "바둑판";
+            this.buttonViewType1.UseVisualStyleBackColor = true;
+            // 
+            // buttonViewType2
+            // 
+            this.buttonViewType2.Location = new System.Drawing.Point(90, 148);
+            this.buttonViewType2.Name = "buttonViewType2";
+            this.buttonViewType2.Size = new System.Drawing.Size(75, 23);
+            this.buttonViewType2.TabIndex = 6;
+            this.buttonViewType2.Text = "리스트";
+            this.buttonViewType2.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(173, 205);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel1.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(3, 224);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(536, 450);
-            this.Controls.Add(this.pictureBox4);
-            this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(821, 602);
+            this.Controls.Add(this.panelMypage);
+            this.Controls.Add(this.panelUpload);
+            this.Controls.Add(this.panelSearch);
+            this.Controls.Add(this.panelHome);
+            this.Controls.Add(this.pictureBoxMypage);
+            this.Controls.Add(this.pictureBoxUpload);
+            this.Controls.Add(this.pictureBoxSerach);
+            this.Controls.Add(this.pictureBoxHome);
             this.Controls.Add(this.buttonJoin);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.buttonLogIn);
@@ -229,10 +460,18 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Mini Instagram Client";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHome)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSerach)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUpload)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMypage)).EndInit();
+            this.panelSearch.ResumeLayout(false);
+            this.panelSearch.PerformLayout();
+            this.panelUpload.ResumeLayout(false);
+            this.panelUpload.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUploadPicture)).EndInit();
+            this.panelMypage.ResumeLayout(false);
+            this.panelMypage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfileImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -253,10 +492,31 @@
         private System.Windows.Forms.Button buttonLogIn;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonJoin;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBoxHome;
+        private System.Windows.Forms.PictureBox pictureBoxSerach;
+        private System.Windows.Forms.PictureBox pictureBoxUpload;
+        private System.Windows.Forms.PictureBox pictureBoxMypage;
+        private System.Windows.Forms.Panel panelSearch;
+        private System.Windows.Forms.TextBox textBoxSearch;
+        private System.Windows.Forms.ListBox ListBoxSearch;
+        private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.Panel panelHome;
+        private System.Windows.Forms.Panel panelUpload;
+        private System.Windows.Forms.Button buttonUpload;
+        private System.Windows.Forms.TextBox textBoxUpload;
+        private System.Windows.Forms.PictureBox pictureBoxUploadPicture;
+        private System.Windows.Forms.TextBox textBoxPicturepath;
+        private System.Windows.Forms.Button buttonFindPicture;
+        private System.Windows.Forms.Panel panelMypage;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button buttonViewType2;
+        private System.Windows.Forms.Button buttonViewType1;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Button buttonProfileEdit;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelPostCounting;
+        private System.Windows.Forms.PictureBox pictureBoxProfileImage;
     }
 }
 
