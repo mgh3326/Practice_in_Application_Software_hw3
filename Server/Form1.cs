@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Net.NetworkInformation;
 
 namespace Server
 {
@@ -22,15 +23,52 @@ namespace Server
             //MessageBox.Show(Get_MyIP());
 
         }
-        public string Get_MyIP()
+        public string Get_MyIP()//vmware 꺼가 나오네 디ㅃ빡
         {
             IPHostEntry host = Dns.GetHostByName(Dns.GetHostName());
             string myip = host.AddressList[0].ToString();
             return myip;
         }
+        public string GetLocalIP()
+        {
+            string localIP = "Not available, please check your network seetings!";
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.ToString();
+                    break;
+                }
+            }
+            return localIP;
+        }
+        //출처: http://legacy.tistory.com/105 [Code Legacy]
+        public static string GetPhysicalIPAdress()
+        {
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                var addr = ni.GetIPProperties().GatewayAddresses.FirstOrDefault();
+                if (addr != null && !addr.Address.ToString().Equals("0.0.0.0"))
+                {
+                    if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+                    {
+                        foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                        {
+                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                            {
+                                return ip.Address.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return String.Empty;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBox_IP.Text = Get_MyIP();
+            textBox_IP.Text = GetPhysicalIPAdress();
 
         }
         TcpListener server;
@@ -38,7 +76,7 @@ namespace Server
 
         public void RUN()
         {
-            MessageBox.Show("TTT");
+            //MessageBox.Show("TTT");
 
             //this.m_listener = new TcpListener(7777);
             //this.m_listener.Start();
@@ -47,10 +85,10 @@ namespace Server
             IPAddress locAddr = IPAddress.Parse(textBox_IP.Text);/* int port = 13000;*/
             try
             {
-                 server = new TcpListener(locAddr, Int32.Parse(textBox_PortNumber.Text));
+                server = new TcpListener(locAddr, Int32.Parse(textBox_PortNumber.Text));
                 //server = new TcpListener(IPAddress.Parse("127.0.0.1"), 13002);
                 server.Start();
-                TextBox_ServerLog.Text += "\n\nConnected";
+                TextBox_ServerLog.AppendText("Connected\n");
 
                 //listening loop // 여기 무한 루프라서 안 되네
                 while (true)
@@ -106,14 +144,14 @@ namespace Server
 
                 button_Start.Text = "Stop";
                 button_Start.ForeColor = Color.Red;
-                TextBox_ServerLog.Text = "Server 기다리는 중..\n";
+                TextBox_ServerLog.AppendText("Server 기다리는 중..\n");
                 item = MemberList.Items.Add("1");//여기서 파일 받아오면 될것 같다.
                 item.SubItems.Add("root");
                 item.SubItems.Add("password");
                 this.m_thread = new Thread(new ThreadStart(RUN));
                 this.m_thread.Start();
                 MessageBox.Show("왜 아무것도 안나오는거야");
-                
+
             }
             else//Stop일 경우
             {
