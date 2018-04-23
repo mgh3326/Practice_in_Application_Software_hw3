@@ -36,8 +36,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxID = new System.Windows.Forms.TextBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.buttonLogIn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonJoin = new System.Windows.Forms.Button();
@@ -147,21 +147,21 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Password : ";
             // 
-            // textBox3
+            // textBoxID
             // 
-            this.textBox3.Location = new System.Drawing.Point(120, 176);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(100, 25);
-            this.textBox3.TabIndex = 8;
+            this.textBoxID.Location = new System.Drawing.Point(120, 176);
+            this.textBoxID.Name = "textBoxID";
+            this.textBoxID.ReadOnly = true;
+            this.textBoxID.Size = new System.Drawing.Size(100, 25);
+            this.textBoxID.TabIndex = 8;
             // 
-            // textBox4
+            // textBoxPassword
             // 
-            this.textBox4.Location = new System.Drawing.Point(122, 216);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(100, 25);
-            this.textBox4.TabIndex = 9;
+            this.textBoxPassword.Location = new System.Drawing.Point(122, 216);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.ReadOnly = true;
+            this.textBoxPassword.Size = new System.Drawing.Size(100, 25);
+            this.textBoxPassword.TabIndex = 9;
             // 
             // buttonLogIn
             // 
@@ -449,8 +449,8 @@
             this.Controls.Add(this.buttonJoin);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.buttonLogIn);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBoxPassword);
+            this.Controls.Add(this.textBoxID);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -488,8 +488,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxID;
+        private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.Button buttonLogIn;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonJoin;

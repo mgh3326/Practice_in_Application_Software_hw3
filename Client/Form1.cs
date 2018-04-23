@@ -106,9 +106,7 @@ namespace Client
         private void buttonConnect_Click(object sender, EventArgs e)
         {
             if (buttonConnect.Text == "Connect")//연결
-            {
-                buttonConnect.Text = "Disconnect";
-                buttonConnect.ForeColor = Color.Red;
+            {//다른 버튼들도 활성화 시켜야 겠다. 이거를 짧게 만들어주는게 좋을까??
 
                 TcpClient client = null;
 
@@ -118,6 +116,15 @@ namespace Client
                     client = new TcpClient();
                     IPAddress locAddr = IPAddress.Parse(textBoxIP.Text); int port = Int32.Parse(textBoxPort.Text);
                     client.Connect(locAddr, port);
+
+
+                    buttonConnect.Text = "Disconnect";//버튼 변경을 여기서 해주면 될까?
+                    buttonConnect.ForeColor = Color.Red;
+                    textBoxID.ReadOnly = false;
+                    textBoxPassword.ReadOnly = false;
+                    buttonLogIn.Enabled = true;
+                    buttonJoin.Enabled = true;
+
 
                     NetworkStream stream = client.GetStream();
                     byte[] readBuffer = new byte[sizeof(int)];
@@ -140,6 +147,7 @@ namespace Client
                 catch (SocketException se)
                 {
                     Console.WriteLine("SocketException:{0}", se);
+                    MessageBox.Show("서버 연결중에 오류 발생!");
                 }
                 finally
                 {
@@ -151,7 +159,10 @@ namespace Client
             {
                 buttonConnect.Text = "Connect";
                 buttonConnect.ForeColor = Color.Black;
-
+                textBoxID.ReadOnly = true;
+                textBoxPassword.ReadOnly = true;
+                buttonLogIn.Enabled = false;
+                buttonJoin.Enabled = false;
             }
 
         }
