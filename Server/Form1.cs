@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net.NetworkInformation;
+using System.IO;
 
 namespace Server
 {
@@ -88,18 +89,20 @@ namespace Server
                 server = new TcpListener(locAddr, Int32.Parse(textBox_PortNumber.Text));
                 //server = new TcpListener(IPAddress.Parse("127.0.0.1"), 13002);
                 server.Start();
-                TextBox_ServerLog.AppendText("Connected\n");
+                TextBox_ServerLog.Text = ("Server - Start\n");
+                TextBox_ServerLog.AppendText(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\n");
 
                 //listening loop // 여기 무한 루프라서 안 되네
                 while (true)
                 {
-                    Console.WriteLine("Waiting for a connection...");
-                    MessageBox.Show("저 여기서 기다리고 있씁니다.");
+                    TextBox_ServerLog.AppendText("Waiting for a connection...");
+                    //MessageBox.Show("저 여기서 기다리고 있씁니다.");
 
                     TcpClient client = server.AcceptTcpClient();
-                    MessageBox.Show("여기서 기다릴라나");
+                    /*MessageBox.Show("여기서 기다릴라나")*/
+                    ;
 
-                    Console.WriteLine("Conneted!");
+                    TextBox_ServerLog.AppendText("Client Access!!");
 
                     DateTime t = DateTime.Now;
                     // string to byte
@@ -144,7 +147,7 @@ namespace Server
 
                 button_Start.Text = "Stop";
                 button_Start.ForeColor = Color.Red;
-                TextBox_ServerLog.AppendText("Server 기다리는 중..\n");
+                TextBox_ServerLog.Text = ("Server 기다리는 중..\n");
                 item = MemberList.Items.Add("1");//여기서 파일 받아오면 될것 같다.
                 item.SubItems.Add("root");
                 item.SubItems.Add("password");
