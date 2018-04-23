@@ -69,7 +69,7 @@ namespace Server
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBox_IP.Text = GetPhysicalIPAdress();
+            textBox_IP.Text = GetPhysicalIPAdress();//자신의 IP 받아오기
 
         }
         TcpListener server;
@@ -95,14 +95,14 @@ namespace Server
                 //listening loop // 여기 무한 루프라서 안 되네
                 while (true)
                 {
-                    TextBox_ServerLog.AppendText("Waiting for a connection...");
+                    TextBox_ServerLog.AppendText("Waiting for a connection...\n");
                     //MessageBox.Show("저 여기서 기다리고 있씁니다.");
 
                     TcpClient client = server.AcceptTcpClient();
-                    /*MessageBox.Show("여기서 기다릴라나")*/
-                    ;
+                    //MessageBox.Show("여기서 기다릴라나");
 
-                    TextBox_ServerLog.AppendText("Client Access!!");
+
+                    TextBox_ServerLog.AppendText("Client Access!!\n");
 
                     DateTime t = DateTime.Now;
                     // string to byte
@@ -153,7 +153,7 @@ namespace Server
                 item.SubItems.Add("password");
                 this.m_thread = new Thread(new ThreadStart(RUN));
                 this.m_thread.Start();
-                MessageBox.Show("왜 아무것도 안나오는거야");
+                //MessageBox.Show("왜 아무것도 안나오는거야");
 
             }
             else//Stop일 경우
