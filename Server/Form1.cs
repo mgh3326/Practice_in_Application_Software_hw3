@@ -36,7 +36,7 @@ namespace Server
         private void button_Start_Click(object sender, EventArgs e)
         {
             ListViewItem item;
-            if(button_Start.Text == "Start")
+            if (button_Start.Text == "Start")
             {
                 if (textBox_IP.Text == "" || textBox_PortNumber.Text == "")
                 {
@@ -50,7 +50,7 @@ namespace Server
                 item = MemberList.Items.Add("1");//여기서 파일 받아오면 될것 같다.
                 item.SubItems.Add("root");
                 item.SubItems.Add("password");
-                MessageBox.Show("왜 아무것도 안나오는거야");
+                //MessageBox.Show("왜 아무것도 안나오는거야");
                 TcpListener server = null;
                 IPAddress locAddr = IPAddress.Parse(textBox_IP.Text);/* int port = 13000;*/
                 try
@@ -60,7 +60,7 @@ namespace Server
                     server.Start();
                     TextBox_ServerLog.Text += "\nConnected";
 
-                    //listening loop
+                    //listening loop // 여기 무한 루프라서 안 되네
                     //while (true)
                     //{
                     //    Console.WriteLine("Waiting for a connection...");
