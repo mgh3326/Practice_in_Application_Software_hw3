@@ -166,5 +166,15 @@ namespace Client
             }
 
         }
+
+        private void buttonJoin_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(textBoxID.Text + "랑" + textBoxPassword.Text + "이걸 보내줘야되네");
+        }
+
+        private void buttonLogIn_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(textBoxID.Text + "랑" + textBoxPassword.Text + "이걸 보내줘야되네");
+        }
     }
 }

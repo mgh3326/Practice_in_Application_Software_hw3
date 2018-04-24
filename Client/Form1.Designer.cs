@@ -172,6 +172,7 @@
             this.buttonLogIn.TabIndex = 10;
             this.buttonLogIn.Text = "로그인";
             this.buttonLogIn.UseVisualStyleBackColor = true;
+            this.buttonLogIn.Click += new System.EventHandler(this.buttonLogIn_Click);
             // 
             // label6
             // 
@@ -191,6 +192,7 @@
             this.buttonJoin.TabIndex = 12;
             this.buttonJoin.Text = "회원가입";
             this.buttonJoin.UseVisualStyleBackColor = true;
+            this.buttonJoin.Click += new System.EventHandler(this.buttonJoin_Click);
             // 
             // pictureBoxHome
             // 
