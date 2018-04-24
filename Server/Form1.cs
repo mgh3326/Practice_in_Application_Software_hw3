@@ -12,7 +12,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net.NetworkInformation;
 using System.IO;
-
+using PacketLibrary;
 namespace Server
 {
     public partial class Form1 : Form
@@ -126,6 +126,7 @@ namespace Server
             catch (SocketException se)
             {
                 Console.WriteLine("SocketException:{0}", se);
+                MessageBox.Show("서버 연결중에 오류 발생!");
             }
             finally
             {
