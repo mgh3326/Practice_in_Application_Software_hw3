@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using PacketLibrary;
 namespace Client
 {
     public partial class Form1 : Form
