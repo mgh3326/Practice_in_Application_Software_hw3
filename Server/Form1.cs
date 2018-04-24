@@ -103,7 +103,7 @@ namespace Server
                     nRead = 0;
                     MessageBox.Show("AAAA");
 
-                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);
+                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
                     MessageBox.Show("11111");
 
                 }
@@ -113,7 +113,8 @@ namespace Server
                 {
                     this.m_bClientOn = false;
                     this.m_networkstream = null;
-
+                    MessageBox.Show("클라이언트가 뒤진거 같습니다");
+                    break;
                 }
                 MessageBox.Show("11111");
 
