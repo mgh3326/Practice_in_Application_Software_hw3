@@ -18,8 +18,20 @@ namespace Client
         {
             InitializeComponent();
         }
-
-
+        private NetworkStream m_networkstream;
+        private TcpClient m_client;
+        private byte[] sendBuffer = new byte[1024 * 4];
+        private byte[] readBuffer = new byte[1024 * 4];
+        private bool m_bConnect = false;
+        public Initialize m_initializeClass;
+        public Login m_loginClass;
+        public void Send()
+        {
+            this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
+            this.m_networkstream.Flush();
+            for (int i = 0; i < 1024 * 4; i++)
+                this.sendBuffer[i] = 0;
+        }
         private void pictureBoxHome_MouseEnter(object sender, EventArgs e)
         {
             pictureBoxHome.BackColor = SystemColors.ActiveCaption;
@@ -108,52 +120,32 @@ namespace Client
             if (buttonConnect.Text == "Connect")//연결
             {//다른 버튼들도 활성화 시켜야 겠다. 이거를 짧게 만들어주는게 좋을까??
 
-                TcpClient client = null;
+                //TcpClient client = null;
+                this.m_client = new TcpClient();
 
 
                 try
                 {
-                    client = new TcpClient();
+                    //client = new TcpClient();
                     IPAddress locAddr = IPAddress.Parse(textBoxIP.Text); int port = Int32.Parse(textBoxPort.Text);
-                    client.Connect(locAddr, port);
+                    m_client.Connect(locAddr, port);
+                   
 
-
-                    buttonConnect.Text = "Disconnect";//버튼 변경을 여기서 해주면 될까?
-                    buttonConnect.ForeColor = Color.Red;
-                    textBoxID.ReadOnly = false;
-                    textBoxPassword.ReadOnly = false;
-                    buttonLogIn.Enabled = true;
-                    buttonJoin.Enabled = true;
-
-
-                    NetworkStream stream = client.GetStream();
-                    byte[] readBuffer = new byte[sizeof(int)];
-
-                    //read bufferSize
-                    stream.Read(readBuffer, 0, readBuffer.Length);
-                    int bufferSize = BitConverter.ToInt32(readBuffer, 0);
-                    Console.WriteLine("Received: {0}", bufferSize);
-
-                    //read buffer
-                    readBuffer = new byte[bufferSize];
-                    int bytes = stream.Read(readBuffer, 0, readBuffer.Length);
-                    string message = Encoding.UTF8.GetString(readBuffer, 0, bytes);
-                    Console.WriteLine("Received: {0}", message);
-
-                    stream.Close();
-                    client.Close();
-                    //listening loop
                 }
                 catch (SocketException se)
                 {
-                    Console.WriteLine("SocketException:{0}", se);
                     MessageBox.Show("서버 연결중에 오류 발생!");
+                    return;
                 }
-                finally
-                {
-                    client.Close();
-                }
-                Console.WriteLine("Client Exit");
+                buttonConnect.Text = "Disconnect";//버튼 변경을 여기서 해주면 될까?
+                buttonConnect.ForeColor = Color.Red;
+                textBoxID.ReadOnly = false;
+                textBoxPassword.ReadOnly = false;
+                buttonLogIn.Enabled = true;
+                buttonJoin.Enabled = true;
+//                MessageBox.Show("여기는 오니?");
+                this.m_bConnect = true;
+                this.m_networkstream = this.m_client.GetStream();
             }
             else//연결 해제
             {
@@ -163,6 +155,10 @@ namespace Client
                 textBoxPassword.ReadOnly = true;
                 buttonLogIn.Enabled = false;
                 buttonJoin.Enabled = false;
+                this.m_client.Close();
+                this.m_networkstream.Close();
+                MessageBox.Show("ohohoh");
+
             }
 
         }

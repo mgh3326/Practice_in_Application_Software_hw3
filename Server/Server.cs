@@ -96,7 +96,7 @@ namespace Server
             while (this.m_bClientOn)
             {
 
-                MessageBox.Show("TTTTT");
+                //MessageBox.Show("TTTTT");
 
                 try
                 {
@@ -105,6 +105,33 @@ namespace Server
 
                     nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
                     MessageBox.Show("11111");
+                    MessageBox.Show("11111");
+
+                    MessageBox.Show("SSSS");
+                    Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
+                    switch ((int)packet.Type)
+                    {
+                        case (int)PacketType.초기화:
+                            {
+                                this.m_initializeClass = (Initialize)Packet.Desserialize(this.readBuffer);
+                                this.Invoke(new MethodInvoker(delegate ()
+                                {
+                                    this.TextBox_ServerLog.AppendText("패킷 전송 성공. " + "Initialize Class Data is" + this.m_initializeClass.Data + "\n");
+                                }));
+                                break;
+
+                            }
+                        case (int)PacketType.로그인:
+                            {
+                                this.m_loginClass = (Login)Packet.Desserialize(this.readBuffer);
+                                this.Invoke(new MethodInvoker(delegate ()
+                                {
+                                    this.TextBox_ServerLog.AppendText("alis 83. Login Class Data is" + this.m_loginClass.m_strID + "\n");
+                                }));
+                                break;
+                            }
+
+                    }
 
                 }
 
@@ -113,37 +140,10 @@ namespace Server
                 {
                     this.m_bClientOn = false;
                     this.m_networkstream = null;
-                    MessageBox.Show("클라이언트가 뒤진거 같습니다");
-                    break;
+                    MessageBox.Show("클라이언트가 먼저 뒤진거 같습니다");
+                    break;//오 이러니까 되는거 같다. 개꿀 또 안되네 뭐지
                 }
-                MessageBox.Show("11111");
 
-                Packet packet = (Packet)Packet.Desserialize(this.readBuffer);
-                MessageBox.Show("SSSS");
-
-                switch ((int)packet.Type)
-                {
-                    case (int)PacketType.초기화:
-                        {
-                            this.m_initializeClass = (Initialize)Packet.Desserialize(this.readBuffer);
-                            this.Invoke(new MethodInvoker(delegate ()
-                            {
-                                this.TextBox_ServerLog.AppendText("패킷 전송 성공. " + "Initialize Class Data is" + this.m_initializeClass.Data + "\n");
-                            }));
-                            break;
-
-                        }
-                    case (int)PacketType.로그인:
-                        {
-                            this.m_loginClass = (Login)Packet.Desserialize(this.readBuffer);
-                            this.Invoke(new MethodInvoker(delegate ()
-                            {
-                                this.TextBox_ServerLog.AppendText("alis 83. Login Class Data is" + this.m_loginClass.m_strID + "\n");
-                            }));
-                            break;
-                        }
-
-                }
             }
 
 
