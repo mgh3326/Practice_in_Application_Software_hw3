@@ -94,5 +94,11 @@
   <ItemGroup>
     <None Include="Resources\profile_img.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PacketLibrary\PacketLibrary.csproj">
+      <Project>{234d7abf-e413-4a3e-90fe-d89052a7d250}</Project>
+      <Name>PacketLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
