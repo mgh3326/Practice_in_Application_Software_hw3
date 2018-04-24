@@ -17,34 +17,6 @@ namespace Server
 {
     public partial class Form1 : Form
     {
-
-        public Form1()
-        {
-            InitializeComponent();
-            //MessageBox.Show(Get_MyIP());
-
-        }
-        public string Get_MyIP()//vmware 꺼가 나오네 디ㅃ빡
-        {
-            IPHostEntry host = Dns.GetHostByName(Dns.GetHostName());
-            string myip = host.AddressList[0].ToString();
-            return myip;
-        }
-        public string GetLocalIP()
-        {
-            string localIP = "Not available, please check your network seetings!";
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                    break;
-                }
-            }
-            return localIP;
-        }
-        //출처: http://legacy.tistory.com/105 [Code Legacy]
         public static string GetPhysicalIPAdress()
         {
             foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
@@ -66,14 +38,21 @@ namespace Server
             }
             return String.Empty;
         }
-
-        private void Form1_Load(object sender, EventArgs e)
+        public Form1()
         {
-            textBox_IP.Text = GetPhysicalIPAdress();//자신의 IP 받아오기
+            InitializeComponent();
+            //MessageBox.Show(Get_MyIP());
 
         }
-        TcpListener server;
+        private NetworkStream m_networkstream;
+        private TcpListener m_listener;
+        private byte[] sendBuffer = new byte[1024 * 4];
+        private byte[] readBuffer = new byte[1024 * 4];
+        private bool m_bClientOn = false;
         private Thread m_thread;
+        public Initialize m_initializeClass;
+        public Login m_loginClass;
+        //TcpListener server;
 
         public void RUN()
         {
@@ -82,57 +61,95 @@ namespace Server
             //this.m_listener = new TcpListener(7777);
             //this.m_listener.Start();
 
-            server = null;
+            //m_listener = null;
             IPAddress locAddr = IPAddress.Parse(textBox_IP.Text);/* int port = 13000;*/
-            try
+
+            m_listener = new TcpListener(locAddr, Int32.Parse(textBox_PortNumber.Text));
+            //server = new TcpListener(IPAddress.Parse("127.0.0.1"), 13002);
+            m_listener.Start();
+            if (!this.m_bClientOn)
             {
-                server = new TcpListener(locAddr, Int32.Parse(textBox_PortNumber.Text));
-                //server = new TcpListener(IPAddress.Parse("127.0.0.1"), 13002);
-                server.Start();
-                TextBox_ServerLog.Text = ("Server - Start\n");
-                TextBox_ServerLog.AppendText(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\n");
-
-                //listening loop // 여기 무한 루프라서 안 되네
-                while (true)
+                this.Invoke(new MethodInvoker(delegate ()
                 {
-                    TextBox_ServerLog.AppendText("Waiting for a connection...\n");
-                    //MessageBox.Show("저 여기서 기다리고 있씁니다.");
+                    TextBox_ServerLog.Text = ("Server - Start\n");
+                    TextBox_ServerLog.AppendText(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\n");
 
-                    TcpClient client = server.AcceptTcpClient();
-                    //MessageBox.Show("여기서 기다릴라나");
+                }));
 
+            }
+            //MessageBox.Show("저 여기서 기다리고 있씁니다.");
+            TextBox_ServerLog.AppendText("Waiting for a connection...\n");
+            TcpClient client = m_listener.AcceptTcpClient();
 
+            if (client.Connected)
+            {
+                this.m_bClientOn = true;
+                this.Invoke(new MethodInvoker(delegate ()
+                {
                     TextBox_ServerLog.AppendText("Client Access!!\n");
+                }));
+                m_networkstream = client.GetStream();
+            }
+            //listening loop // 여기 무한 루프라서 안 되네
+            int nRead = 0;
+            //MessageBox.Show("여기는 오니?");
+            while (this.m_bClientOn)
+            {
 
-                    DateTime t = DateTime.Now;
-                    // string to byte
-                    string message = string.Format("서버에서 보내는 메세지 {0}", t.ToString("yyyy-MM-dd hh:mm:ss"));
-                    byte[] wrtieBuffer = Encoding.UTF8.GetBytes(message);
+                MessageBox.Show("TTTTT");
 
-                    //int to byte
-                    int bytes = wrtieBuffer.Length;
-                    byte[] wrtieBufferSize = BitConverter.GetBytes(bytes);
+                try
+                {
+                    nRead = 0;
+                    MessageBox.Show("AAAA");
 
-                    //send to client
-                    NetworkStream stream = client.GetStream();
-                    //send Buffer
-                    stream.Write(wrtieBufferSize, 0, wrtieBufferSize.Length);
-                    Console.WriteLine("Sent: {0}", message);
-                    stream.Close();
-                    client.Close();
-                    Console.WriteLine();
+                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);
+                    MessageBox.Show("11111");
+
+                }
+
+
+                catch
+                {
+                    this.m_bClientOn = false;
+                    this.m_networkstream = null;
+
+                }
+                MessageBox.Show("11111");
+
+                Packet packet = (Packet)Packet.Desserialize(this.readBuffer);
+                MessageBox.Show("SSSS");
+
+                switch ((int)packet.Type)
+                {
+                    case (int)PacketType.초기화:
+                        {
+                            this.m_initializeClass = (Initialize)Packet.Desserialize(this.readBuffer);
+                            this.Invoke(new MethodInvoker(delegate ()
+                            {
+                                this.TextBox_ServerLog.AppendText("패킷 전송 성공. " + "Initialize Class Data is" + this.m_initializeClass.Data + "\n");
+                            }));
+                            break;
+
+                        }
+                    case (int)PacketType.로그인:
+                        {
+                            this.m_loginClass = (Login)Packet.Desserialize(this.readBuffer);
+                            this.Invoke(new MethodInvoker(delegate ()
+                            {
+                                this.TextBox_ServerLog.AppendText("alis 83. Login Class Data is" + this.m_loginClass.m_strID + "\n");
+                            }));
+                            break;
+                        }
+
                 }
             }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException:{0}", se);
-                MessageBox.Show("서버 연결중에 오류 발생!");
-            }
-            finally
-            {
-                server.Stop();
-            }
-            Console.WriteLine("\n서버가 종료됩니다.");
+
+
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            textBox_IP.Text = GetPhysicalIPAdress();//자신의 IP 받아오기
 
         }
         private void button_Start_Click(object sender, EventArgs e)
@@ -155,18 +172,15 @@ namespace Server
                 this.m_thread = new Thread(new ThreadStart(RUN));
                 this.m_thread.Start();
                 //MessageBox.Show("왜 아무것도 안나오는거야");
-
             }
             else//Stop일 경우
             {
                 button_Start.Text = "Start";
                 button_Start.ForeColor = Color.Black;
-                server.Stop();
+                m_listener.Stop();
                 //this.m_networkstream.Close();
                 this.m_thread.Abort();
             }
-
-
         }
     }
 }
