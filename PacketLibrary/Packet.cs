@@ -11,6 +11,7 @@ namespace PacketLibrary
     public enum PacketType
     {
         초기화 = 0,
+        회원가입,
         로그인
     }
     public enum PacketSendERROR
@@ -57,9 +58,18 @@ namespace PacketLibrary
     {
         public int Data = 0;
     }
+    [Serializable]
+    public class Join : Packet
+    {
+        public string m_strID = "";
+        //public string Id = "";
+        public string m_strPassword = "";
+    }
     public class Login : Packet
     {
-        public string m_strID;
+        public string m_strID="";
+        //public string Id = "";
+        public string m_strPassword = "";
         public Login()
         {
             this.m_strID = null;
