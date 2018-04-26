@@ -212,7 +212,7 @@ namespace Server
                                             continue;
                                         }
                                         parts.Add(MemberList.Items[i].SubItems[1].Text);
-                                            
+                                        //MessageBox.Show(parts[i]);
                                         
                                     }
                                     Search searchClass = new Search();

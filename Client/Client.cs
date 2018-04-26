@@ -115,7 +115,25 @@ namespace Client
             Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
             switch ((int)packet.Type)
             {
+                case (int)PacketType.조회:
+                    {
+                        this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            //MessageBox.Show("가입 성공");
+                            //errorClass.str = "이미 사용중인 ID입니다.";
+                            MessageBox.Show("TTTTT");
+                            ListBoxSearch.Items.Add("ohho");
+;                            foreach(string ohho in m_searchClass.m_list)
+                            {
+                                ListBoxSearch.Items.Add(ohho);
+                            }
+                            
 
+                        }));
+                        break;
+
+                    }
                 case (int)PacketSendERROR.정상:
                     {
                         this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
@@ -123,7 +141,7 @@ namespace Client
                         {
                             //MessageBox.Show("가입 성공");
                             //errorClass.str = "이미 사용중인 ID입니다.";
-
+                            
 
                         }));
                         break;
@@ -135,7 +153,7 @@ namespace Client
                         this.Invoke(new MethodInvoker(delegate ()
                         {
                             //MessageBox.Show(this.m_errorClass.str);
-                            ListBoxSearch.Items.Add("예시로 일단 이거를 넣어보자");
+                            //ListBoxSearch.Items.Add("예시로 일단 이거를 넣어보자");
                         }));
                         break;
 
