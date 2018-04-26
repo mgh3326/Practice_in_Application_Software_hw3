@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +20,14 @@ namespace Client
         public Form1()
         {
             InitializeComponent();
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.Filter = "Images Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg;*.jpeg;*.gif;*.bmp;*.png|" + "All files (*.*)|*.*";
+            ofd.Title = "My Tet Browser";
+            ofd.FileName = "";
         }
         private TcpClient m_client;
-        private byte[] sendBuffer = new byte[1024 * 4];
-        private byte[] readBuffer = new byte[1024 * 4];
+        private byte[] sendBuffer = new byte[1024 * 1*4];
+        private byte[] readBuffer = new byte[1024 * 1*4];
         private bool m_bConnect = false;
         public Initialize m_initializeClass;
         public Login m_loginClass;
@@ -28,6 +35,9 @@ namespace Client
         public Error m_errorClass;
         public Search m_searchClass;
         public Upload m_uploadClass;
+        public FileStream m_fileStream;
+        public string ohoh_filename;
+        public byte[] ohoh_array;
         public void Send()
         {
             this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
@@ -134,41 +144,7 @@ namespace Client
             pictureBoxMypage.BackColor = SystemColors.Control;
             pictureBoxUpload.BackColor = SystemColors.ActiveCaption;
             pictureBoxHome.BackColor = SystemColors.Control;
-            if (!this.m_bConnect)
-                return;
-            Upload uploadClass = new Upload();
-            uploadClass.Type = (int)PacketType.업로드;
-            uploadClass.m_strID = this.textBoxID.Text;
-            //searchClass.m_strPassword = this.textBoxPassword.Text;
-            //MessageBox.Show("어디서 뒤졋지222");
-
-            Packet.Serialize(uploadClass).CopyTo(this.sendBuffer, 0);
-            this.Send();
-            int nRead = 0;
-
-            nRead = 0;
-            //MessageBox.Show("AAAA");
-
-            nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
-
-            Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
-            switch ((int)packet.Type)
-            {
-                case (int)PacketType.조회:
-                    {
-                        this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            ListBoxSearch.Items.Clear();
-
-                            foreach (string ohho in m_searchClass.m_list)
-                            {
-                                ListBoxSearch.Items.Add(ohho);
-                            }
-                        }));
-                        break;
-                    }
-            }
+            
         }
 
         private void pictureBoxMypage_Click(object sender, EventArgs e)
@@ -359,6 +335,75 @@ namespace Client
                 }
             }
 
+        }
+
+        private void buttonFindPicture_Click(object sender, EventArgs e)
+        {
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                //MessageBox.Show(ofd.FileName);
+                m_fileStream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
+                ohoh_filename = ofd.SafeFileName;
+                //ohoh_array.Initialize();
+                ohoh_array = File.ReadAllBytes(ofd.FileName);
+                
+                //Image img = System.Drawing.Image.FromStream(m_fileStream);
+                //MessageBox.Show(ofd.SafeFileName);
+                //img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\myImage");
+                ////byte[] buff = System.IO.File.ReadAllBytes(ofd.FileName);
+                ////System.IO.MemoryStream ms = new System.IO.MemoryStream(buff);
+                //MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\myImage.Jpeg");
+
+                ofd.FileName = "";
+            }
+        }
+
+        private void buttonUpload_Click(object sender, EventArgs e)
+        {
+            //textBoxUpload.Text;
+
+
+            if (!this.m_bConnect)
+                return;
+            Upload uploadClass = new Upload();
+            uploadClass.Type = (int)PacketType.업로드;
+            uploadClass.m_strID = this.textBoxID.Text;
+            uploadClass.m_message = this.textBoxUpload.Text;
+            //uploadClass.m_file = this.m_fileStream;
+            uploadClass.m_filename = ohoh_filename;
+            uploadClass.m_byte = ohoh_array;
+            //searchClass.m_strPassword = this.textBoxPassword.Text;
+            //MessageBox.Show("어디서 뒤졋지222");
+
+            Packet.Serialize(uploadClass).CopyTo(this.sendBuffer, 0);
+
+
+            this.Send();
+            int nRead = 0;
+
+            nRead = 0;
+            //MessageBox.Show("AAAA");
+
+            //nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
+            MessageBox.Show("일단 완료!");
+            //Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
+            //switch ((int)packet.Type)
+            //{
+            //    case (int)PacketType.업로드:
+            //        {
+            //            this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
+            //            this.Invoke(new MethodInvoker(delegate ()
+            //            {
+            //                ListBoxSearch.Items.Clear();
+
+            //                foreach (string ohho in m_searchClass.m_list)
+            //                {
+            //                    ListBoxSearch.Items.Add(ohho);
+            //                }
+            //            }));
+            //            break;
+            //        }
+            //}
         }
     }
 }

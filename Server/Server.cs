@@ -46,14 +46,14 @@ namespace Server
         }
         private NetworkStream m_networkstream;
         private TcpListener m_listener;
-        private byte[] sendBuffer = new byte[1024 * 4];
-        private byte[] readBuffer = new byte[1024 * 4];
+        private byte[] sendBuffer = new byte[1024 * 1*4];
+        private byte[] readBuffer = new byte[1024 * 1*4];
         private bool m_bClientOn = false;
         private Thread m_thread;
         public Initialize m_initializeClass;
         public Join m_joinClass;
         public Search m_searchClass;
-
+        public Upload m_uploadClass;
         public Login m_loginClass;
         //TcpListener server;
         public void Send()
@@ -65,6 +65,8 @@ namespace Server
         }
         public void RUN()
         {
+            CheckForIllegalCrossThreadCalls = false;    // cross thread false
+
             //MessageBox.Show("TTT");
 
             //this.m_listener = new TcpListener(7777);
@@ -213,7 +215,7 @@ namespace Server
                                         }
                                         parts.Add(MemberList.Items[i].SubItems[1].Text);
                                         //MessageBox.Show(parts[i]);
-                                        
+
                                     }
                                     Search searchClass = new Search();
                                     searchClass.Type = (int)PacketType.조회;
@@ -221,6 +223,40 @@ namespace Server
                                     searchClass.m_list = parts;
                                     Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
                                     this.Send();
+                                }));
+                                break;
+                            }
+                        case (int)PacketType.업로드:
+                            {
+                                this.m_uploadClass = (Upload)Packet.Desserialize(this.readBuffer);
+                                int a = 0;
+                                this.Invoke(new MethodInvoker(delegate ()
+                                {
+                                    const string fileName = "Test#@@#.dat";
+                                    using (FileStream
+            fileStream = new FileStream(fileName, FileMode.Create))
+                                    {
+                                        for (int i = 0; i < m_uploadClass.m_byte.Length; i++)
+                                        {
+                                            fileStream.WriteByte(m_uploadClass.m_byte[i]);
+                                        }
+                                        Image img = System.Drawing.Image.FromStream(fileStream);
+                                        img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
+                                        MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
+                                    }
+
+
+
+
+                                    //MessageBox.Show();
+
+                                    
+                                    //Search searchClass = new Search();
+                                    //searchClass.Type = (int)PacketType.조회;
+                                    //searchClass.Data = 0;
+                                    //searchClass.m_list = parts;
+                                    //Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
+                                    //this.Send();
                                 }));
                                 break;
                             }

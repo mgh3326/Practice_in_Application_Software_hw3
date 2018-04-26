@@ -67,6 +67,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.labelPostCounting = new System.Windows.Forms.Label();
             this.pictureBoxProfileImage = new System.Windows.Forms.PictureBox();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHome)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSerach)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUpload)).BeginInit();
@@ -305,6 +306,7 @@
             this.buttonUpload.TabIndex = 4;
             this.buttonUpload.Text = "게시물 등록하기";
             this.buttonUpload.UseVisualStyleBackColor = true;
+            this.buttonUpload.Click += new System.EventHandler(this.buttonUpload_Click);
             // 
             // textBoxUpload
             // 
@@ -337,6 +339,7 @@
             this.buttonFindPicture.TabIndex = 0;
             this.buttonFindPicture.Text = "찾기";
             this.buttonFindPicture.UseVisualStyleBackColor = true;
+            this.buttonFindPicture.Click += new System.EventHandler(this.buttonFindPicture_Click);
             // 
             // panelMypage
             // 
@@ -429,6 +432,10 @@
             this.pictureBoxProfileImage.TabIndex = 0;
             this.pictureBoxProfileImage.TabStop = false;
             // 
+            // ofd
+            // 
+            this.ofd.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -515,6 +522,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label labelPostCounting;
         private System.Windows.Forms.PictureBox pictureBoxProfileImage;
+        private System.Windows.Forms.OpenFileDialog ofd;
     }
 }
 

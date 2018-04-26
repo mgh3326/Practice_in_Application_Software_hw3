@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PacketLibrary
 {
@@ -37,12 +38,34 @@ namespace PacketLibrary
         }
         public static byte[] Serialize(Object o)
         {
-            MemoryStream ms = new MemoryStream(1024 * 4);
+            MemoryStream ms = new MemoryStream(1024 * 1 * 4);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(ms, o);//0->o
             return ms.ToArray();
         }
+        public byte[] serialize()
+        {
+            byte[] b = null;
 
+            try
+            {
+                using (MemoryStream memory = new MemoryStream(1024 * 1 * 4))
+                {
+                    new BinaryFormatter().Serialize(memory, this);
+                    b = memory.ToArray();
+                }
+            }
+            catch (OutOfMemoryException)
+            {
+                b = null;
+            }
+            catch (Exception)
+            {
+                b = null;
+            }
+
+            return b;
+        }
         public static Object Desserialize(byte[] bt)
         {
             MemoryStream ms = new MemoryStream(1024 * 4);
@@ -56,7 +79,29 @@ namespace PacketLibrary
             ms.Close();
             return obj;
         }
+        public static Packet deserialize(byte[] b)
+        {
+            Packet pkt = null;
 
+            if (b == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                using (MemoryStream memory = new MemoryStream(b))
+                {
+                    pkt = (Packet)new BinaryFormatter().Deserialize(memory);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            return pkt;
+        }
     }
     [Serializable]
     public class Initialize : Packet
@@ -95,13 +140,18 @@ namespace PacketLibrary
         public string m_strID = "";
         public List<string> m_list;
     }
+
     [Serializable]
     public class Upload : Packet
     {
+
+        //public FileStream m_file;
         public int Data = 0;
         public string m_strID = "";
         public string m_message = "";
-        public FileStream m_file;
+        public string m_filename = "";
         public List<string> m_list;
+        public byte[] m_byte;
+
     }
 }
