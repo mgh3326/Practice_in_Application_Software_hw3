@@ -204,8 +204,6 @@
             this.pictureBoxHome.TabIndex = 13;
             this.pictureBoxHome.TabStop = false;
             this.pictureBoxHome.Click += new System.EventHandler(this.pictureBoxHome_Click);
-            this.pictureBoxHome.MouseEnter += new System.EventHandler(this.pictureBoxHome_MouseEnter);
-            this.pictureBoxHome.MouseLeave += new System.EventHandler(this.pictureBoxHome_MouseLeave);
             // 
             // pictureBoxSerach
             // 
@@ -217,8 +215,6 @@
             this.pictureBoxSerach.TabIndex = 14;
             this.pictureBoxSerach.TabStop = false;
             this.pictureBoxSerach.Click += new System.EventHandler(this.pictureBoxSerach_Click);
-            this.pictureBoxSerach.MouseEnter += new System.EventHandler(this.pictureBoxSerach_MouseEnter);
-            this.pictureBoxSerach.MouseLeave += new System.EventHandler(this.pictureBoxSerach_MouseLeave);
             // 
             // pictureBoxUpload
             // 
@@ -230,8 +226,6 @@
             this.pictureBoxUpload.TabIndex = 15;
             this.pictureBoxUpload.TabStop = false;
             this.pictureBoxUpload.Click += new System.EventHandler(this.pictureBoxUpload_Click);
-            this.pictureBoxUpload.MouseEnter += new System.EventHandler(this.pictureBoxUpload_MouseEnter);
-            this.pictureBoxUpload.MouseLeave += new System.EventHandler(this.pictureBoxUpload_MouseLeave);
             // 
             // pictureBoxMypage
             // 
@@ -243,8 +237,6 @@
             this.pictureBoxMypage.TabIndex = 16;
             this.pictureBoxMypage.TabStop = false;
             this.pictureBoxMypage.Click += new System.EventHandler(this.pictureBoxMypage_Click);
-            this.pictureBoxMypage.MouseEnter += new System.EventHandler(this.pictureBoxMypage_MouseEnter);
-            this.pictureBoxMypage.MouseLeave += new System.EventHandler(this.pictureBoxMypage_MouseLeave);
             // 
             // panelHome
             // 
@@ -282,6 +274,7 @@
             this.buttonSearch.TabIndex = 1;
             this.buttonSearch.Text = "찾기";
             this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
             // 
             // textBoxSearch
             // 

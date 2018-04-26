@@ -230,7 +230,6 @@ namespace Server
                 {
                     this.m_bClientOn = false;
                     this.m_networkstream = null;
-                    MessageBox.Show("클라이언트가 먼저 뒤진거 같습니다");
                     break;//오 이러니까 되는거 같다. 개꿀 또 안되네 뭐지
                 }
             }

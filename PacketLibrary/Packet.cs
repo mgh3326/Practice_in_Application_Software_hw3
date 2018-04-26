@@ -15,6 +15,7 @@ namespace PacketLibrary
         회원가입,
         로그인,
         조회,
+        업로드,
         //에러
     }
     public enum PacketSendERROR
@@ -92,6 +93,15 @@ namespace PacketLibrary
     {
         public int Data = 0;
         public string m_strID = "";
+        public List<string> m_list;
+    }
+    [Serializable]
+    public class Upload : Packet
+    {
+        public int Data = 0;
+        public string m_strID = "";
+        public string m_message = "";
+        public FileStream m_file;
         public List<string> m_list;
     }
 }

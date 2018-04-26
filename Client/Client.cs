@@ -27,6 +27,7 @@ namespace Client
         private NetworkStream m_networkstream;
         public Error m_errorClass;
         public Search m_searchClass;
+        public Upload m_uploadClass;
         public void Send()
         {
             this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
@@ -34,51 +35,8 @@ namespace Client
             for (int i = 0; i < 1024 * 4; i++)
                 this.sendBuffer[i] = 0;
         }
-        private void pictureBoxHome_MouseEnter(object sender, EventArgs e)
-        {
-            pictureBoxHome.BackColor = SystemColors.ActiveCaption;
-        }
 
-        private void pictureBoxHome_MouseLeave(object sender, EventArgs e)
-        {
-            pictureBoxHome.BackColor = SystemColors.Control;
 
-        }
-
-        private void pictureBoxSerach_MouseEnter(object sender, EventArgs e)
-        {
-            pictureBoxSerach.BackColor = SystemColors.ActiveCaption;
-        }
-
-        private void pictureBoxSerach_MouseLeave(object sender, EventArgs e)
-        {
-            pictureBoxSerach.BackColor = SystemColors.Control;
-
-        }
-
-        private void pictureBoxUpload_MouseEnter(object sender, EventArgs e)
-        {
-            pictureBoxUpload.BackColor = SystemColors.ActiveCaption;
-
-        }
-
-        private void pictureBoxUpload_MouseLeave(object sender, EventArgs e)
-        {
-            pictureBoxUpload.BackColor = SystemColors.Control;
-
-        }
-
-        private void pictureBoxMypage_MouseEnter(object sender, EventArgs e)
-        {
-            pictureBoxMypage.BackColor = SystemColors.ActiveCaption;
-
-        }
-
-        private void pictureBoxMypage_MouseLeave(object sender, EventArgs e)
-        {
-            pictureBoxMypage.BackColor = SystemColors.Control;
-
-        }
         private void pictureBoxHome_Click(object sender, EventArgs e)
         {
             panelMypage.Visible = false;
@@ -86,11 +44,19 @@ namespace Client
             panelSearch.Visible = false;
             panelUpload.Visible = false;
             panelHome.Visible = true;
-
+            pictureBoxSerach.BackColor = SystemColors.Control;
+            pictureBoxMypage.BackColor = SystemColors.ActiveCaption;
+            pictureBoxUpload.BackColor = SystemColors.Control;
+            pictureBoxHome.BackColor = SystemColors.Control;
         }
 
         private void pictureBoxSerach_Click(object sender, EventArgs e)
         {
+            pictureBoxSerach.BackColor = SystemColors.ActiveCaption;
+            pictureBoxMypage.BackColor = SystemColors.Control;
+            pictureBoxUpload.BackColor = SystemColors.Control;
+            pictureBoxHome.BackColor = SystemColors.Control;
+
             panelUpload.Visible = false;
             panelHome.Visible = false;
             panelMypage.Visible = false;
@@ -120,44 +86,39 @@ namespace Client
                         this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
                         this.Invoke(new MethodInvoker(delegate ()
                         {
-                            //MessageBox.Show("가입 성공");
-                            //errorClass.str = "이미 사용중인 ID입니다.";
-                            MessageBox.Show("TTTTT");
-                            ListBoxSearch.Items.Add("ohho");
-;                            foreach(string ohho in m_searchClass.m_list)
+                            ListBoxSearch.Items.Clear();
+
+                            foreach (string ohho in m_searchClass.m_list)
                             {
                                 ListBoxSearch.Items.Add(ohho);
                             }
-                            
-
                         }));
                         break;
-
                     }
-                case (int)PacketSendERROR.정상:
-                    {
-                        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            //MessageBox.Show("가입 성공");
-                            //errorClass.str = "이미 사용중인 ID입니다.";
-                            
+                    //case (int)PacketSendERROR.정상:
+                    //    {
+                    //        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
+                    //        this.Invoke(new MethodInvoker(delegate ()
+                    //        {
+                    //            //MessageBox.Show("가입 성공");
+                    //            //errorClass.str = "이미 사용중인 ID입니다.";
 
-                        }));
-                        break;
 
-                    }
-                case (int)PacketSendERROR.에러:
-                    {
-                        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            //MessageBox.Show(this.m_errorClass.str);
-                            //ListBoxSearch.Items.Add("예시로 일단 이거를 넣어보자");
-                        }));
-                        break;
+                    //        }));
+                    //        break;
 
-                    }
+                    //    }
+                    //case (int)PacketSendERROR.에러:
+                    //    {
+                    //        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
+                    //        this.Invoke(new MethodInvoker(delegate ()
+                    //        {
+                    //            //MessageBox.Show(this.m_errorClass.str);
+                    //            //ListBoxSearch.Items.Add("예시로 일단 이거를 넣어보자");
+                    //        }));
+                    //        break;
+
+                    //    }
 
             }
         }
@@ -169,6 +130,45 @@ namespace Client
             panelMypage.Visible = false;
 
             panelUpload.Visible = true;
+            pictureBoxSerach.BackColor = SystemColors.Control;
+            pictureBoxMypage.BackColor = SystemColors.Control;
+            pictureBoxUpload.BackColor = SystemColors.ActiveCaption;
+            pictureBoxHome.BackColor = SystemColors.Control;
+            if (!this.m_bConnect)
+                return;
+            Upload uploadClass = new Upload();
+            uploadClass.Type = (int)PacketType.업로드;
+            uploadClass.m_strID = this.textBoxID.Text;
+            //searchClass.m_strPassword = this.textBoxPassword.Text;
+            //MessageBox.Show("어디서 뒤졋지222");
+
+            Packet.Serialize(uploadClass).CopyTo(this.sendBuffer, 0);
+            this.Send();
+            int nRead = 0;
+
+            nRead = 0;
+            //MessageBox.Show("AAAA");
+
+            nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
+
+            Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
+            switch ((int)packet.Type)
+            {
+                case (int)PacketType.조회:
+                    {
+                        this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            ListBoxSearch.Items.Clear();
+
+                            foreach (string ohho in m_searchClass.m_list)
+                            {
+                                ListBoxSearch.Items.Add(ohho);
+                            }
+                        }));
+                        break;
+                    }
+            }
         }
 
         private void pictureBoxMypage_Click(object sender, EventArgs e)
@@ -177,6 +177,10 @@ namespace Client
             panelHome.Visible = false;
             panelUpload.Visible = false;
             panelMypage.Visible = true;
+            pictureBoxSerach.BackColor = SystemColors.Control;
+            pictureBoxMypage.BackColor = SystemColors.ActiveCaption;
+            pictureBoxUpload.BackColor = SystemColors.Control;
+            pictureBoxHome.BackColor = SystemColors.Control;
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
@@ -341,6 +345,20 @@ namespace Client
 
                     }
             }
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            ListBoxSearch.Items.Clear();
+            foreach (string ohoh in m_searchClass.m_list)
+            {
+
+                if (ohoh.StartsWith(textBoxSearch.Text) == true)
+                {
+                    ListBoxSearch.Items.Add(ohoh);
+                }
+            }
+
         }
     }
 }
