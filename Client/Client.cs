@@ -353,7 +353,7 @@ namespace Client
             foreach (string ohoh in m_searchClass.m_list)
             {
 
-                if (ohoh.StartsWith(textBoxSearch.Text) == true)
+                if (ohoh.Contains(textBoxSearch.Text) == true)
                 {
                     ListBoxSearch.Items.Add(ohoh);
                 }
