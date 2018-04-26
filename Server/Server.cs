@@ -127,26 +127,62 @@ namespace Server
                                 //MessageBox.Show("어디서 뒤졋지0000");
 
                                 this.m_joinClass = (Join)Packet.Desserialize(this.readBuffer);
+                                //MessageBox.Show(MemberList.Items[0].SubItems[1].Text);
+                                int a = 0;
                                 this.Invoke(new MethodInvoker(delegate ()
                                 {
-                                    //MessageBox.Show("어디서 뒤졋지");
-                                    //this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + "\n");
-                                    //this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strPassword + "\n");
-                                    ListViewItem item;
-                                    item = MemberList.Items.Add((MemberList.Items.Count+1).ToString());//여기서 파일 받아오면 될것 같다.
-                                    item.SubItems.Add(this.m_joinClass.m_strID);
-                                    item.SubItems.Add(this.m_joinClass.m_strPassword);
+                                    for (int i = 0; i < MemberList.Items.Count; i++)//같은거 확인하려고 했는데 안되네
+                                    {
+                                        if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
+                                        {
+                                            MessageBox.Show("이미 회원가입이 되어있습니다.");
+                                            a = 1;
+                                            break;
+                                        }
+                                    }
+                                    if(a!=1)
+                                    {
+                                        ListViewItem item;
+                                        item = MemberList.Items.Add((MemberList.Items.Count + 1).ToString());//오예 추가된다 기모띠
+                                        item.SubItems.Add(this.m_joinClass.m_strID);
+                                        item.SubItems.Add(this.m_joinClass.m_strPassword);
+                                        a = 0;
+
+                                    }
+
+
                                     //MessageBox.Show("index = "+MemberList.Items.Count.ToString());
-                                   
+
+
+
+                                    //this.TextBox_ServerLog.AppendText(MemberList.Items[1].SubItems.ToString());
+
+
                                 }));
                                 break;
                             }
                         case (int)PacketType.로그인:
                             {
                                 this.m_loginClass = (Login)Packet.Desserialize(this.readBuffer);
+                                int a = 0;
+
                                 this.Invoke(new MethodInvoker(delegate ()
                                 {
-                                    this.TextBox_ServerLog.AppendText("alis 83. Login Class Data is" + this.m_loginClass.m_strID + "\n");
+                                    for (int i = 0; i < MemberList.Items.Count; i++)//가입 확인하고 로그인 시켜주자
+                                    {
+                                        if (m_loginClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
+                                        {
+                                            MessageBox.Show(this.m_loginClass.m_strID +"가 로그인을 하였습니다.");
+                                            a = 1;
+                                            break;
+                                        }
+                                    }
+                                    if (a != 1)
+                                    {
+                                        MessageBox.Show(this.m_loginClass.m_strID + "은 가입이 안되있소 가입을 먼저 부탁하오");
+                                        a = 0;
+
+                                    }
                                 }));
                                 break;
                             }
@@ -175,7 +211,7 @@ namespace Server
         }
         private void button_Start_Click(object sender, EventArgs e)
         {
-           
+
             if (button_Start.Text == "Start")
             {
                 if (textBox_IP.Text == "" || textBox_PortNumber.Text == "")
@@ -187,7 +223,7 @@ namespace Server
                 button_Start.Text = "Stop";
                 button_Start.ForeColor = Color.Red;
                 TextBox_ServerLog.Text = ("Server 기다리는 중..\n");
-                
+
                 this.m_thread = new Thread(new ThreadStart(RUN));
                 this.m_thread.Start();
                 //MessageBox.Show("왜 아무것도 안나오는거야");
