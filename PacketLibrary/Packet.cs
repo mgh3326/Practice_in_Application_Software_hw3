@@ -38,7 +38,7 @@ namespace PacketLibrary
         }
         public static byte[] Serialize(Object o)
         {
-            MemoryStream ms = new MemoryStream(1024 * 1 * 4);
+            MemoryStream ms = new MemoryStream();
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(ms, o);//0->o
             return ms.ToArray();
@@ -49,7 +49,7 @@ namespace PacketLibrary
 
             try
             {
-                using (MemoryStream memory = new MemoryStream(1024 * 1 * 4))
+                using (MemoryStream memory = new MemoryStream())
                 {
                     new BinaryFormatter().Serialize(memory, this);
                     b = memory.ToArray();
@@ -68,7 +68,7 @@ namespace PacketLibrary
         }
         public static Object Desserialize(byte[] bt)
         {
-            MemoryStream ms = new MemoryStream(1024 * 4);
+            MemoryStream ms = new MemoryStream();
             foreach (byte b in bt)
             {
                 ms.WriteByte(b);
@@ -112,16 +112,19 @@ namespace PacketLibrary
     public class Join : Packet
     {
         public string m_strID = "";
-        //public string Id = "";
-        public string m_strPassword = "";
-    }
-    [Serializable]
+		public int Data = 0;
+		public string m_strPassword = "";
+		public string str = "";
+
+	}
+	[Serializable]
     public class Login : Packet
     {
-        public string m_strID = "";
-        //public string Id = "";
-        public string m_strPassword = "";
-        public Login()
+		public string m_strID = "";
+		public int Data = 0;
+		public string m_strPassword = "";
+		public string str = "";
+		public Login()
         {
             this.m_strID = null;
         }

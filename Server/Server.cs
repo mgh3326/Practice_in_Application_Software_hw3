@@ -46,8 +46,8 @@ namespace Server
         }
         private NetworkStream m_networkstream;
         private TcpListener m_listener;
-        private byte[] sendBuffer = new byte[1024 * 1*4];
-        private byte[] readBuffer = new byte[1024 * 1*4];
+        private byte[] sendBuffer = new byte[1024*1024 * 1 * 4];
+        private byte[] readBuffer = new byte[1024*1024 * 1 * 4];
         private bool m_bClientOn = false;
         private Thread m_thread;
         public Initialize m_initializeClass;
@@ -60,7 +60,7 @@ namespace Server
         {
             this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
             this.m_networkstream.Flush();
-            for (int i = 0; i < 1024 * 4; i++)
+            for (int i = 0; i < 1024*1024 * 4; i++)
                 this.sendBuffer[i] = 0;
         }
         public void RUN()
@@ -114,23 +114,12 @@ namespace Server
                     nRead = 0;
                     //MessageBox.Show("AAAA");
 
-                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
+                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024*1024 * 4);//여기서 멈춰있나
 
                     Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
                     switch ((int)packet.Type)
                     {
-                        case (int)PacketType.초기화:
-                            {
-                                this.m_initializeClass = (Initialize)Packet.Desserialize(this.readBuffer);
-                                this.Invoke(new MethodInvoker(delegate ()
-                                {
-                                    MessageBox.Show("초기화 버튼을 눌려부렸어");
-                                    this.TextBox_ServerLog.AppendText("패킷 전송 성공. " + "Initialize Class Data is" + this.m_initializeClass.Data + "\n");
-
-                                }));
-                                break;
-
-                            }
+                        
                         case (int)PacketType.회원가입:
                             {
                                 this.m_joinClass = (Join)Packet.Desserialize(this.readBuffer);
@@ -141,11 +130,11 @@ namespace Server
                                     {
                                         if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
-                                            Error errorClass = new Error();
-                                            errorClass.Type = (int)PacketSendERROR.에러;
-                                            errorClass.Data = 1;
-                                            errorClass.str = "이미 사용중인 ID입니다.";
-                                            Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+                                            Join joinClass = new Join();
+											joinClass.Type = (int)PacketType.회원가입;
+											joinClass.Data = 1;
+											joinClass.str = "이미 사용중인 ID입니다.";
+                                            Packet.Serialize(joinClass).CopyTo(this.sendBuffer, 0);
                                             this.Send();
                                             a = 1;
                                             break;
@@ -158,10 +147,10 @@ namespace Server
                                         item.SubItems.Add(this.m_joinClass.m_strID);
                                         item.SubItems.Add(this.m_joinClass.m_strPassword);//회원 가입 완료
                                         this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + " >> Join\n");
-                                        Error errorClass = new Error();
-                                        errorClass.Type = (int)PacketSendERROR.정상;
-                                        errorClass.Data = 0;
-                                        Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+										Join joinClass = new Join();
+										joinClass.Type = (int)PacketType.회원가입;
+										joinClass.Data = 0;
+                                        Packet.Serialize(joinClass).CopyTo(this.sendBuffer, 0);
                                         this.Send();
                                     }
                                 }));
@@ -178,10 +167,10 @@ namespace Server
                                         if (m_loginClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
                                             this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + " >> Login\n");
-                                            Error errorClass = new Error();
-                                            errorClass.Type = (int)PacketSendERROR.정상;
-                                            errorClass.Data = 0;
-                                            Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+                                            Login loginClass = new Login();
+											loginClass.Type = (int)PacketType.로그인;
+											loginClass.Data = 0;
+                                            Packet.Serialize(loginClass).CopyTo(this.sendBuffer, 0);
                                             this.Send();
                                             a = 1;
                                             break;
@@ -190,11 +179,11 @@ namespace Server
                                     if (a != 1)
                                     {
                                         a = 0;
-                                        Error errorClass = new Error();
-                                        errorClass.Type = (int)PacketSendERROR.에러;
-                                        errorClass.Data = 1;
-                                        errorClass.str = "가입을 먼저 부탁하오";
-                                        Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+										Login loginClass = new Login();
+										loginClass.Type = (int)PacketType.로그인;
+										loginClass.Data = 1;
+										loginClass.str = "가입을 먼저 부탁하오";
+                                        Packet.Serialize(loginClass).CopyTo(this.sendBuffer, 0);
                                         this.Send();
                                     }
                                 }));
@@ -250,7 +239,7 @@ namespace Server
 
                                     //MessageBox.Show();
 
-                                    
+
                                     //Search searchClass = new Search();
                                     //searchClass.Type = (int)PacketType.조회;
                                     //searchClass.Data = 0;

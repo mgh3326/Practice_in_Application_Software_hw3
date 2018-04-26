@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PacketLibrary;
@@ -26,8 +27,8 @@ namespace Client
             ofd.FileName = "";
         }
         private TcpClient m_client;
-        private byte[] sendBuffer = new byte[1024 * 1*4];
-        private byte[] readBuffer = new byte[1024 * 1*4];
+        private byte[] sendBuffer = new byte[1024*1024 * 1*4];
+        private byte[] readBuffer = new byte[1024*1024 * 1*4];
         private bool m_bConnect = false;
         public Initialize m_initializeClass;
         public Login m_loginClass;
@@ -36,18 +37,138 @@ namespace Client
         public Search m_searchClass;
         public Upload m_uploadClass;
         public FileStream m_fileStream;
-        public string ohoh_filename;
+		private Thread m_thread;
+		public Join m_joinClass;
+		public string ohoh_filename;
         public byte[] ohoh_array;
         public void Send()
         {
             this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
             this.m_networkstream.Flush();
-            for (int i = 0; i < 1024 * 4; i++)
+            for (int i = 0; i < 1024*1024 * 4; i++)
                 this.sendBuffer[i] = 0;
         }
+        public void RUN()
+        {
+            CheckForIllegalCrossThreadCalls = false;    // cross thread false
+			this.m_client = new TcpClient();
 
 
-        private void pictureBoxHome_Click(object sender, EventArgs e)
+			try
+			{
+				//client = new TcpClient();
+				IPAddress locAddr = IPAddress.Parse(textBoxIP.Text); int port = Int32.Parse(textBoxPort.Text);
+				m_client.Connect(locAddr, port);
+
+
+			}
+			catch (SocketException se)
+			{
+				MessageBox.Show("서버 연결중에 오류 발생!");
+				return;
+			}
+			buttonConnect.Text = "Disconnect";//버튼 변경을 여기서 해주면 될까?
+			buttonConnect.ForeColor = Color.Red;
+			textBoxID.ReadOnly = false;
+			textBoxPassword.ReadOnly = false;
+			buttonLogIn.Enabled = true;
+			buttonJoin.Enabled = true;
+			//                MessageBox.Show("여기는 오니?");
+			this.m_bConnect = true;
+			this.m_networkstream = this.m_client.GetStream();
+			int nRead = 0;
+
+			while (this.m_bConnect)
+			{
+				
+					nRead = 0;
+
+					nRead = this.m_networkstream.Read(readBuffer, 0, 1024*1024 * 4);//여기서 멈춰있나
+	
+
+					Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
+				try
+				{
+					switch ((int)packet.Type)
+					{
+						case (int)PacketType.조회:
+							{
+								this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
+								this.Invoke(new MethodInvoker(delegate ()
+								{
+									ListBoxSearch.Items.Clear();
+
+									foreach (string ohho in m_searchClass.m_list)
+									{
+										ListBoxSearch.Items.Add(ohho);
+									}
+								}));
+								break;
+							}
+						case (int)PacketType.로그인://정상 로그인
+							{
+								
+								this.m_loginClass = (Login)Packet.Desserialize(this.readBuffer);
+								this.Invoke(new MethodInvoker(delegate ()
+								{
+									if (m_loginClass.Data == 0)
+									{
+										//MessageBox.Show("가입 성공");
+										//errorClass.str = "이미 사용중인 ID입니다.";
+										if (buttonLogIn.Text == "로그인")
+										{
+											buttonLogIn.ForeColor = Color.Red;
+											buttonLogIn.Text = "로그아웃";
+
+										}
+										else
+										{
+											buttonLogIn.ForeColor = Color.Black;
+											buttonLogIn.Text = "로그인";
+										}
+									}
+									else
+									{
+										MessageBox.Show(this.m_loginClass.str);
+
+									}
+								}));
+								break;
+							}
+						case (int)PacketType.회원가입:
+							{
+								this.m_joinClass = (Join)Packet.Desserialize(this.readBuffer);
+								this.Invoke(new MethodInvoker(delegate ()
+								{
+									if (m_joinClass.Data == 1)
+									{
+										MessageBox.Show(this.m_joinClass.str);
+									}
+
+
+									//MessageBox.Show("가입 성공");
+									//errorClass.str = "이미 사용중인 ID입니다.";
+								}));
+
+								break;
+
+							}
+					}
+				}
+				catch
+				{
+					this.m_bConnect = false;
+					this.m_networkstream = null;
+					MessageBox.Show("클라이언트 종료");
+					break;//오 이러니까 되는거 같다. 개꿀 또 안되네 뭐지
+				}
+			}
+		
+
+		}
+
+
+		private void pictureBoxHome_Click(object sender, EventArgs e)
         {
             panelMypage.Visible = false;
 
@@ -81,56 +202,6 @@ namespace Client
 
             Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
             this.Send();
-            int nRead = 0;
-
-            nRead = 0;
-            //MessageBox.Show("AAAA");
-
-            nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
-
-            Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
-            switch ((int)packet.Type)
-            {
-                case (int)PacketType.조회:
-                    {
-                        this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            ListBoxSearch.Items.Clear();
-
-                            foreach (string ohho in m_searchClass.m_list)
-                            {
-                                ListBoxSearch.Items.Add(ohho);
-                            }
-                        }));
-                        break;
-                    }
-                    //case (int)PacketSendERROR.정상:
-                    //    {
-                    //        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                    //        this.Invoke(new MethodInvoker(delegate ()
-                    //        {
-                    //            //MessageBox.Show("가입 성공");
-                    //            //errorClass.str = "이미 사용중인 ID입니다.";
-
-
-                    //        }));
-                    //        break;
-
-                    //    }
-                    //case (int)PacketSendERROR.에러:
-                    //    {
-                    //        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                    //        this.Invoke(new MethodInvoker(delegate ()
-                    //        {
-                    //            //MessageBox.Show(this.m_errorClass.str);
-                    //            //ListBoxSearch.Items.Add("예시로 일단 이거를 넣어보자");
-                    //        }));
-                    //        break;
-
-                    //    }
-
-            }
         }
 
         private void pictureBoxUpload_Click(object sender, EventArgs e)
@@ -163,33 +234,9 @@ namespace Client
         {
             if (buttonConnect.Text == "Connect")//연결
             {//다른 버튼들도 활성화 시켜야 겠다. 이거를 짧게 만들어주는게 좋을까??
-
-                //TcpClient client = null;
-                this.m_client = new TcpClient();
-
-
-                try
-                {
-                    //client = new TcpClient();
-                    IPAddress locAddr = IPAddress.Parse(textBoxIP.Text); int port = Int32.Parse(textBoxPort.Text);
-                    m_client.Connect(locAddr, port);
-
-
-                }
-                catch (SocketException se)
-                {
-                    MessageBox.Show("서버 연결중에 오류 발생!");
-                    return;
-                }
-                buttonConnect.Text = "Disconnect";//버튼 변경을 여기서 해주면 될까?
-                buttonConnect.ForeColor = Color.Red;
-                textBoxID.ReadOnly = false;
-                textBoxPassword.ReadOnly = false;
-                buttonLogIn.Enabled = true;
-                buttonJoin.Enabled = true;
-                //                MessageBox.Show("여기는 오니?");
-                this.m_bConnect = true;
-                this.m_networkstream = this.m_client.GetStream();
+				this.m_thread = new Thread(new ThreadStart(RUN));
+				this.m_thread.Start();
+				//TcpClient client = null;
             }
             else//연결 해제
             {
@@ -201,9 +248,9 @@ namespace Client
                 buttonJoin.Enabled = false;
                 this.m_client.Close();
                 this.m_networkstream.Close();
-                MessageBox.Show("ohohoh");
-
-            }
+				this.m_thread.Abort();
+				//MessageBox.Show("ohohoh");
+			}
 
         }
 
@@ -221,43 +268,7 @@ namespace Client
 
             Packet.Serialize(joinClass).CopyTo(this.sendBuffer, 0);
             this.Send();
-            int nRead = 0;
-
-            nRead = 0;
-            //MessageBox.Show("AAAA");
-
-            nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
-
-            Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
-            switch ((int)packet.Type)
-            {
-
-                case (int)PacketSendERROR.정상:
-                    {
-                        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            //MessageBox.Show("가입 성공");
-                            //errorClass.str = "이미 사용중인 ID입니다.";
-
-
-                        }));
-                        break;
-
-                    }
-                case (int)PacketSendERROR.에러:
-                    {
-                        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            MessageBox.Show(this.m_errorClass.str);
-
-                        }));
-                        break;
-
-                    }
-
-            }
+ 
             //MessageBox.Show(textBoxID.Text + "랑" + textBoxPassword.Text + "이걸 보내줘야되네");
             //패킷 수신 해줘야겠네
         }
@@ -276,51 +287,8 @@ namespace Client
 
             Packet.Serialize(login).CopyTo(this.sendBuffer, 0);
             this.Send();
-            int nRead = 0;
-
-            nRead = 0;
-            //MessageBox.Show("AAAA");
-
-            nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
-
-            Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
-            switch ((int)packet.Type)
-            {
-
-                case (int)PacketSendERROR.정상://정상 로그인
-                    {
-                        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            //MessageBox.Show("가입 성공");
-                            //errorClass.str = "이미 사용중인 ID입니다.";
-                            if (buttonLogIn.Text == "로그인")
-                            {
-                                buttonLogIn.ForeColor = Color.Red;
-                                buttonLogIn.Text = "로그아웃";
-
-                            }
-                            else
-                            {
-                                buttonLogIn.ForeColor = Color.Black;
-                                buttonLogIn.Text = "로그인";
-                            }
-                        }));
-                        break;
-
-                    }
-                case (int)PacketSendERROR.에러://로그인 못함
-                    {
-                        this.m_errorClass = (Error)Packet.Desserialize(this.readBuffer);
-                        this.Invoke(new MethodInvoker(delegate ()
-                        {
-                            MessageBox.Show(this.m_errorClass.str);
-
-                        }));
-                        break;
-
-                    }
-            }
+            
+            
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -384,7 +352,7 @@ namespace Client
             nRead = 0;
             //MessageBox.Show("AAAA");
 
-            //nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
+            //nRead = this.m_networkstream.Read(readBuffer, 0, 1024*1024 * 4);//여기서 멈춰있나
             MessageBox.Show("일단 완료!");
             //Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
             //switch ((int)packet.Type)
