@@ -38,6 +38,7 @@ namespace PacketLibrary
             bf.Serialize(ms, o);//0->o
             return ms.ToArray();
         }
+
         public static Object Desserialize(byte[] bt)
         {
             MemoryStream ms = new MemoryStream(1024 * 4);
@@ -65,9 +66,10 @@ namespace PacketLibrary
         //public string Id = "";
         public string m_strPassword = "";
     }
+    [Serializable]
     public class Login : Packet
     {
-        public string m_strID="";
+        public string m_strID = "";
         //public string Id = "";
         public string m_strPassword = "";
         public Login()

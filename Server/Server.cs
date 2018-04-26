@@ -135,7 +135,7 @@ namespace Server
                                     {
                                         if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
-                                            MessageBox.Show("이미 회원가입이 되어있습니다.");
+                                            MessageBox.Show("이미 사용중인 ID입니다.");
                                             a = 1;
                                             break;
                                         }
@@ -145,7 +145,8 @@ namespace Server
                                         ListViewItem item;
                                         item = MemberList.Items.Add((MemberList.Items.Count + 1).ToString());//오예 추가된다 기모띠
                                         item.SubItems.Add(this.m_joinClass.m_strID);
-                                        item.SubItems.Add(this.m_joinClass.m_strPassword);
+                                        item.SubItems.Add(this.m_joinClass.m_strPassword);//회원 가입 완료
+
                                         a = 0;
 
                                     }
@@ -172,7 +173,7 @@ namespace Server
                                     {
                                         if (m_loginClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
-                                            MessageBox.Show(this.m_loginClass.m_strID +"가 로그인을 하였습니다.");
+                                            MessageBox.Show(this.m_loginClass.m_strID +"가 로그인을 하였습니다.");//로그인 완료
                                             a = 1;
                                             break;
                                         }

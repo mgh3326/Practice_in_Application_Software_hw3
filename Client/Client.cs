@@ -165,12 +165,35 @@ namespace Client
 
         private void buttonJoin_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(textBoxID.Text + "랑" + textBoxPassword.Text + "이걸 보내줘야되네");
+            //MessageBox.Show("어디서 뒤졋지111");
+
+            if (!this.m_bConnect)
+                return;
+            Join joinClass = new Join();
+            joinClass.Type = (int)PacketType.회원가입;
+            joinClass.m_strID = this.textBoxID.Text;
+            joinClass.m_strPassword = this.textBoxPassword.Text;
+            //MessageBox.Show("어디서 뒤졋지222");
+
+            Packet.Serialize(joinClass).CopyTo(this.sendBuffer, 0);
+            this.Send();
+            //MessageBox.Show(textBoxID.Text + "랑" + textBoxPassword.Text + "이걸 보내줘야되네");
         }
 
         private void buttonLogIn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(textBoxID.Text + "랑" + textBoxPassword.Text + "이걸 보내줘야되네");
+            if (!this.m_bConnect)
+            {
+                return;
+            }
+
+            Login login = new Login();
+            login.Type = (int)PacketType.로그인;
+            login.m_strID = this.textBoxID.Text;
+            login.m_strPassword = this.textBoxPassword.Text;
+
+            Packet.Serialize(login).CopyTo(this.sendBuffer, 0);
+            this.Send();
         }
     }
 }
