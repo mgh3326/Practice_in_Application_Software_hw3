@@ -51,6 +51,8 @@ namespace Server
         private bool m_bClientOn = false;
         private Thread m_thread;
         public Initialize m_initializeClass;
+        public Join m_joinClass;
+
         public Login m_loginClass;
         //TcpListener server;
 
@@ -101,13 +103,10 @@ namespace Server
                 try
                 {
                     nRead = 0;
-                    MessageBox.Show("AAAA");
+                    //MessageBox.Show("AAAA");
 
                     nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 4);//여기서 멈춰있나
-                    MessageBox.Show("11111");
-                    MessageBox.Show("11111");
 
-                    MessageBox.Show("SSSS");
                     Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
                     switch ((int)packet.Type)
                     {
@@ -116,10 +115,31 @@ namespace Server
                                 this.m_initializeClass = (Initialize)Packet.Desserialize(this.readBuffer);
                                 this.Invoke(new MethodInvoker(delegate ()
                                 {
+                                    MessageBox.Show("초기화 버튼을 눌려부렸어");
                                     this.TextBox_ServerLog.AppendText("패킷 전송 성공. " + "Initialize Class Data is" + this.m_initializeClass.Data + "\n");
+
                                 }));
                                 break;
 
+                            }
+                        case (int)PacketType.회원가입:
+                            {
+                                //MessageBox.Show("어디서 뒤졋지0000");
+
+                                this.m_joinClass = (Join)Packet.Desserialize(this.readBuffer);
+                                this.Invoke(new MethodInvoker(delegate ()
+                                {
+                                    //MessageBox.Show("어디서 뒤졋지");
+                                    //this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + "\n");
+                                    //this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strPassword + "\n");
+                                    ListViewItem item;
+                                    item = MemberList.Items.Add((MemberList.Items.Count+1).ToString());//여기서 파일 받아오면 될것 같다.
+                                    item.SubItems.Add(this.m_joinClass.m_strID);
+                                    item.SubItems.Add(this.m_joinClass.m_strPassword);
+                                    //MessageBox.Show("index = "+MemberList.Items.Count.ToString());
+                                   
+                                }));
+                                break;
                             }
                         case (int)PacketType.로그인:
                             {
@@ -155,7 +175,7 @@ namespace Server
         }
         private void button_Start_Click(object sender, EventArgs e)
         {
-            ListViewItem item;
+           
             if (button_Start.Text == "Start")
             {
                 if (textBox_IP.Text == "" || textBox_PortNumber.Text == "")
@@ -167,9 +187,7 @@ namespace Server
                 button_Start.Text = "Stop";
                 button_Start.ForeColor = Color.Red;
                 TextBox_ServerLog.Text = ("Server 기다리는 중..\n");
-                item = MemberList.Items.Add("1");//여기서 파일 받아오면 될것 같다.
-                item.SubItems.Add("root");
-                item.SubItems.Add("password");
+                
                 this.m_thread = new Thread(new ThreadStart(RUN));
                 this.m_thread.Start();
                 //MessageBox.Show("왜 아무것도 안나오는거야");
