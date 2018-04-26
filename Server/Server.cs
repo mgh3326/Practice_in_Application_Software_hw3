@@ -52,10 +52,17 @@ namespace Server
         private Thread m_thread;
         public Initialize m_initializeClass;
         public Join m_joinClass;
+        public Search m_searchClass;
 
         public Login m_loginClass;
         //TcpListener server;
-
+        public void Send()
+        {
+            this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
+            this.m_networkstream.Flush();
+            for (int i = 0; i < 1024 * 4; i++)
+                this.sendBuffer[i] = 0;
+        }
         public void RUN()
         {
             //MessageBox.Show("TTT");
@@ -124,10 +131,7 @@ namespace Server
                             }
                         case (int)PacketType.회원가입:
                             {
-                                //MessageBox.Show("어디서 뒤졋지0000");
-
                                 this.m_joinClass = (Join)Packet.Desserialize(this.readBuffer);
-                                //MessageBox.Show(MemberList.Items[0].SubItems[1].Text);
                                 int a = 0;
                                 this.Invoke(new MethodInvoker(delegate ()
                                 {
@@ -135,30 +139,29 @@ namespace Server
                                     {
                                         if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
-                                            MessageBox.Show("이미 사용중인 ID입니다.");
+                                            Error errorClass = new Error();
+                                            errorClass.Type = (int)PacketSendERROR.에러;
+                                            errorClass.Data = 1;
+                                            errorClass.str = "이미 사용중인 ID입니다.";
+                                            Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+                                            this.Send();
                                             a = 1;
                                             break;
                                         }
                                     }
-                                    if(a!=1)
+                                    if (a != 1)
                                     {
                                         ListViewItem item;
                                         item = MemberList.Items.Add((MemberList.Items.Count + 1).ToString());//오예 추가된다 기모띠
                                         item.SubItems.Add(this.m_joinClass.m_strID);
                                         item.SubItems.Add(this.m_joinClass.m_strPassword);//회원 가입 완료
-
-                                        a = 0;
-
+                                        this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + " >> Join\n");
+                                        Error errorClass = new Error();
+                                        errorClass.Type = (int)PacketSendERROR.정상;
+                                        errorClass.Data = 0;
+                                        Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+                                        this.Send();
                                     }
-
-
-                                    //MessageBox.Show("index = "+MemberList.Items.Count.ToString());
-
-
-
-                                    //this.TextBox_ServerLog.AppendText(MemberList.Items[1].SubItems.ToString());
-
-
                                 }));
                                 break;
                             }
@@ -166,33 +169,63 @@ namespace Server
                             {
                                 this.m_loginClass = (Login)Packet.Desserialize(this.readBuffer);
                                 int a = 0;
-
                                 this.Invoke(new MethodInvoker(delegate ()
                                 {
                                     for (int i = 0; i < MemberList.Items.Count; i++)//가입 확인하고 로그인 시켜주자
                                     {
                                         if (m_loginClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
-                                            MessageBox.Show(this.m_loginClass.m_strID +"가 로그인을 하였습니다.");//로그인 완료
+                                            this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + " >> Login\n");
+                                            Error errorClass = new Error();
+                                            errorClass.Type = (int)PacketSendERROR.정상;
+                                            errorClass.Data = 0;
+                                            Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+                                            this.Send();
                                             a = 1;
                                             break;
                                         }
                                     }
                                     if (a != 1)
                                     {
-                                        MessageBox.Show(this.m_loginClass.m_strID + "은 가입이 안되있소 가입을 먼저 부탁하오");
                                         a = 0;
-
+                                        Error errorClass = new Error();
+                                        errorClass.Type = (int)PacketSendERROR.에러;
+                                        errorClass.Data = 1;
+                                        errorClass.str = "가입을 먼저 부탁하오";
+                                        Packet.Serialize(errorClass).CopyTo(this.sendBuffer, 0);
+                                        this.Send();
                                     }
                                 }));
                                 break;
                             }
-
+                        case (int)PacketType.조회:
+                            {
+                                this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
+                                int a = 0;
+                                this.Invoke(new MethodInvoker(delegate ()
+                                {
+                                    List<String> parts = new List<String>();
+                                    for (int i = 0; i < MemberList.Items.Count; i++)//같은거 확인하려고 했는데 안되네
+                                    {
+                                        if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
+                                        {
+                                            continue;
+                                        }
+                                        parts.Add(MemberList.Items[i].SubItems[1].Text);
+                                            
+                                        
+                                    }
+                                    Search searchClass = new Search();
+                                    searchClass.Type = (int)PacketType.조회;
+                                    searchClass.Data = 0;
+                                    searchClass.m_list = parts;
+                                    Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
+                                    this.Send();
+                                }));
+                                break;
+                            }
                     }
-
                 }
-
-
                 catch
                 {
                     this.m_bClientOn = false;
@@ -200,19 +233,14 @@ namespace Server
                     MessageBox.Show("클라이언트가 먼저 뒤진거 같습니다");
                     break;//오 이러니까 되는거 같다. 개꿀 또 안되네 뭐지
                 }
-
             }
-
-
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             textBox_IP.Text = GetPhysicalIPAdress();//자신의 IP 받아오기
-
         }
         private void button_Start_Click(object sender, EventArgs e)
         {
-
             if (button_Start.Text == "Start")
             {
                 if (textBox_IP.Text == "" || textBox_PortNumber.Text == "")

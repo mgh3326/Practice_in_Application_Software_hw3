@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Windows.Forms;
 
 namespace PacketLibrary
 {
@@ -12,7 +13,9 @@ namespace PacketLibrary
     {
         초기화 = 0,
         회원가입,
-        로그인
+        로그인,
+        조회,
+        //에러
     }
     public enum PacketSendERROR
     {
@@ -77,5 +80,18 @@ namespace PacketLibrary
             this.m_strID = null;
         }
 
+    }
+    [Serializable]
+    public class Error : Packet
+    {
+        public int Data = 0;
+        public string str = "";
+    }
+    [Serializable]
+    public class Search : Packet
+    {
+        public int Data = 0;
+        public string m_strID = "";
+        public List<string> m_list;
     }
 }

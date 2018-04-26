@@ -259,7 +259,7 @@
             this.panelSearch.Controls.Add(this.ListBoxSearch);
             this.panelSearch.Controls.Add(this.buttonSearch);
             this.panelSearch.Controls.Add(this.textBoxSearch);
-            this.panelSearch.Location = new System.Drawing.Point(348, 57);
+            this.panelSearch.Location = new System.Drawing.Point(770, 57);
             this.panelSearch.Name = "panelSearch";
             this.panelSearch.Size = new System.Drawing.Size(277, 298);
             this.panelSearch.TabIndex = 0;
@@ -297,7 +297,7 @@
             this.panelUpload.Controls.Add(this.pictureBoxUploadPicture);
             this.panelUpload.Controls.Add(this.textBoxPicturepath);
             this.panelUpload.Controls.Add(this.buttonFindPicture);
-            this.panelUpload.Location = new System.Drawing.Point(348, 57);
+            this.panelUpload.Location = new System.Drawing.Point(473, 46);
             this.panelUpload.Name = "panelUpload";
             this.panelUpload.Size = new System.Drawing.Size(277, 297);
             this.panelUpload.TabIndex = 18;
@@ -355,7 +355,7 @@
             this.panelMypage.Controls.Add(this.label8);
             this.panelMypage.Controls.Add(this.labelPostCounting);
             this.panelMypage.Controls.Add(this.pictureBoxProfileImage);
-            this.panelMypage.Location = new System.Drawing.Point(581, 205);
+            this.panelMypage.Location = new System.Drawing.Point(1080, 68);
             this.panelMypage.Name = "panelMypage";
             this.panelMypage.Size = new System.Drawing.Size(234, 337);
             this.panelMypage.TabIndex = 19;
@@ -439,7 +439,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(821, 602);
+            this.ClientSize = new System.Drawing.Size(1357, 671);
             this.Controls.Add(this.panelMypage);
             this.Controls.Add(this.panelUpload);
             this.Controls.Add(this.panelSearch);
