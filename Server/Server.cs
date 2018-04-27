@@ -232,6 +232,7 @@ namespace Server
                                         Image img = System.Drawing.Image.FromStream(fileStream);
                                         img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
                                         MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
+										
                                     }
 
 
