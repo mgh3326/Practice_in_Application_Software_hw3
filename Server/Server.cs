@@ -46,8 +46,8 @@ namespace Server
         }
         private NetworkStream m_networkstream;
         private TcpListener m_listener;
-        private byte[] sendBuffer = new byte[1024*1024 * 1 * 4];
-        private byte[] readBuffer = new byte[1024*1024 * 1 * 4];
+        private byte[] sendBuffer = new byte[1024 * 1024 * 1 * 4];
+        private byte[] readBuffer = new byte[1024 * 1024 * 1 * 4];
         private bool m_bClientOn = false;
         private Thread m_thread;
         public Initialize m_initializeClass;
@@ -55,12 +55,14 @@ namespace Server
         public Search m_searchClass;
         public Upload m_uploadClass;
         public Login m_loginClass;
+        private StreamReader m_file_reader = null;
+        private StreamWriter m_file_writer = null;
         //TcpListener server;
         public void Send()
         {
             this.m_networkstream.Write(this.sendBuffer, 0, this.sendBuffer.Length);
             this.m_networkstream.Flush();
-            for (int i = 0; i < 1024*1024 * 4; i++)
+            for (int i = 0; i < 1024 * 1024 * 4; i++)
                 this.sendBuffer[i] = 0;
         }
         public void RUN()
@@ -82,9 +84,35 @@ namespace Server
             {
                 this.Invoke(new MethodInvoker(delegate ()
                 {
+                    
                     TextBox_ServerLog.Text = ("Server - Start\n");
-                    TextBox_ServerLog.AppendText(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\n");
+                    TextBox_ServerLog.AppendText(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test" + "\n");//저장 파일 폴더
+                    System.IO.Directory.CreateDirectory(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test");// 없다면 생성 되도록 함
+                    if (this.m_file_writer == null)
+                        this.m_file_writer = new StreamWriter(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test" + "\\member.txt", true);
+                    m_file_writer.Flush();
+                    m_file_writer.Close();
+                    m_file_writer = null;
+                    this.m_file_reader = new StreamReader(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test" + "\\member.txt");
+                    ////처음으로 돌립니다.
+                    //if (this.m_file_reader.Peek() < 0) this.m_file_reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
+                    //리스트뷰에 넣기
+                    int i = 1;
+                    while (m_file_reader.Peek() >= 0)
+                    {
+                        ListViewItem item = new ListViewItem(i.ToString());
+                        foreach (string ohohstring in m_file_reader.ReadLine().Split(new char[] { ',' }))
+                        {
+                            item.SubItems.Add(ohohstring);
+                        }
+                        MemberList.Items.Add(item);
+                        i++;
+                    }
+                    this.m_file_reader.Close();
+                    this.m_file_reader = null;
+                    //MessageBox.Show("멤버 파일을 모두 읽어 왔습니다.");
+                    //this.m_file_writer = File.AppendText("log.txt");
                 }));
 
             }
@@ -114,12 +142,12 @@ namespace Server
                     nRead = 0;
                     //MessageBox.Show("AAAA");
 
-                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024*1024 * 4);//여기서 멈춰있나
+                    nRead = this.m_networkstream.Read(readBuffer, 0, 1024 * 1024 * 4);//여기서 멈춰있나
 
                     Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
                     switch ((int)packet.Type)
                     {
-                        
+
                         case (int)PacketType.회원가입:
                             {
                                 this.m_joinClass = (Join)Packet.Desserialize(this.readBuffer);
@@ -131,9 +159,9 @@ namespace Server
                                         if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
                                             Join joinClass = new Join();
-											joinClass.Type = (int)PacketType.회원가입;
-											joinClass.Data = 1;
-											joinClass.str = "이미 사용중인 ID입니다.";
+                                            joinClass.Type = (int)PacketType.회원가입;
+                                            joinClass.Data = 1;
+                                            joinClass.str = "이미 사용중인 ID입니다.";
                                             Packet.Serialize(joinClass).CopyTo(this.sendBuffer, 0);
                                             this.Send();
                                             a = 1;
@@ -147,9 +175,19 @@ namespace Server
                                         item.SubItems.Add(this.m_joinClass.m_strID);
                                         item.SubItems.Add(this.m_joinClass.m_strPassword);//회원 가입 완료
                                         this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + " >> Join\n");
-										Join joinClass = new Join();
-										joinClass.Type = (int)PacketType.회원가입;
-										joinClass.Data = 0;
+                                        if (this.m_file_writer == null)
+                                            this.m_file_writer = new StreamWriter(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test" + "\\member.txt", true);
+                                        System.IO.Directory.CreateDirectory(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\"+this.m_joinClass.m_strID);// 개인 폴더 생성
+
+                                        m_file_writer.WriteLine(this.m_joinClass.m_strID +","+ this.m_joinClass.m_strPassword);
+                                        m_file_writer.Flush();
+                                        m_file_writer.Close();
+                                        m_file_writer = null;
+                                        //System.IO.Directory.CreateDirectory(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\"+ this.m_joinClass.m_strID);// 없다면 생성 되도록 함
+
+                                        Join joinClass = new Join();
+                                        joinClass.Type = (int)PacketType.회원가입;
+                                        joinClass.Data = 0;
                                         Packet.Serialize(joinClass).CopyTo(this.sendBuffer, 0);
                                         this.Send();
                                     }
@@ -162,14 +200,16 @@ namespace Server
                                 int a = 0;
                                 this.Invoke(new MethodInvoker(delegate ()
                                 {
+                                    //MessageBox.Show(MemberList.Items.Count.ToString());//Test
                                     for (int i = 0; i < MemberList.Items.Count; i++)//가입 확인하고 로그인 시켜주자
                                     {
-                                        if (m_loginClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
+                                        //MessageBox.Show(MemberList.Items[i].SubItems[1].Text);
+                                        if (m_loginClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))//왜 이게 안되지??
                                         {
-                                            this.TextBox_ServerLog.AppendText(this.m_joinClass.m_strID + " >> Login\n");
+                                            this.TextBox_ServerLog.AppendText(this.m_loginClass.m_strID + " >> Login\n");
                                             Login loginClass = new Login();
-											loginClass.Type = (int)PacketType.로그인;
-											loginClass.Data = 0;
+                                            loginClass.Type = (int)PacketType.로그인;
+                                            loginClass.Data = 0;
                                             Packet.Serialize(loginClass).CopyTo(this.sendBuffer, 0);
                                             this.Send();
                                             a = 1;
@@ -179,10 +219,10 @@ namespace Server
                                     if (a != 1)
                                     {
                                         a = 0;
-										Login loginClass = new Login();
-										loginClass.Type = (int)PacketType.로그인;
-										loginClass.Data = 1;
-										loginClass.str = "가입을 먼저 부탁하오";
+                                        Login loginClass = new Login();
+                                        loginClass.Type = (int)PacketType.로그인;
+                                        loginClass.Data = 1;
+                                        loginClass.str = "가입을 먼저 부탁하오";
                                         Packet.Serialize(loginClass).CopyTo(this.sendBuffer, 0);
                                         this.Send();
                                     }
@@ -198,7 +238,7 @@ namespace Server
                                     List<String> parts = new List<String>();
                                     for (int i = 0; i < MemberList.Items.Count; i++)//같은거 확인하려고 했는데 안되네
                                     {
-                                        if (m_joinClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
+                                        if (m_searchClass.m_strID.Equals(MemberList.Items[i].SubItems[1].Text))
                                         {
                                             continue;
                                         }
@@ -212,6 +252,7 @@ namespace Server
                                     searchClass.m_list = parts;
                                     Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
                                     this.Send();
+                                    //MessageBox.Show("보냈쪄");
                                 }));
                                 break;
                             }
@@ -232,7 +273,7 @@ namespace Server
                                         Image img = System.Drawing.Image.FromStream(fileStream);
                                         img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
                                         MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
-										
+
                                     }
 
 
@@ -290,6 +331,13 @@ namespace Server
                 //this.m_networkstream.Close();
                 this.m_thread.Abort();
             }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            m_listener.Stop();
+            //this.m_networkstream.Close();
+            this.m_thread.Abort();
         }
     }
 }
