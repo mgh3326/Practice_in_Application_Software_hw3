@@ -238,6 +238,8 @@ namespace Client
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
+            if (textBoxPort.Text == "" || textBoxIP.Text == "")
+                MessageBox.Show("IP와 Port 번호를 채우고 눌러주세요");
             if (buttonConnect.Text == "Connect")//연결
             {//다른 버튼들도 활성화 시켜야 겠다. 이거를 짧게 만들어주는게 좋을까??
                 this.m_thread = new Thread(new ThreadStart(RUN));
