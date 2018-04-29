@@ -276,20 +276,25 @@ namespace Server
 										img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\" + this.m_loginClass.m_strID + "\\" + m_uploadClass.m_filename);
 									}
                                     MessageBox.Show("수신 완료\n경로 : " + Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\" + this.m_loginClass.m_strID + "\\" + m_uploadClass.m_filename);
+									//if (this.m_file_writer == null)
+									//	this.m_file_writer = new StreamWriter(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test" + this.m_loginClass.m_strID + "\\" +"message.txt", true);
+									////System.IO.Directory.CreateDirectory(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\" + this.m_joinClass.m_strID);// 개인 폴더 생성
+
+									//m_file_writer.WriteLine(m_uploadClass.m_message);
+									//m_file_writer.Flush();
+									//m_file_writer.Close();
+									//m_file_writer = null;
+
+									//MessageBox.Show();
 
 
-
-
-                                    //MessageBox.Show();
-
-
-                                    //Search searchClass = new Search();
-                                    //searchClass.Type = (int)PacketType.조회;
-                                    //searchClass.Data = 0;
-                                    //searchClass.m_list = parts;
-                                    //Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
-                                    //this.Send();
-                                }));
+									//Search searchClass = new Search();
+									//searchClass.Type = (int)PacketType.조회;
+									//searchClass.Data = 0;
+									//searchClass.m_list = parts;
+									//Packet.Serialize(searchClass).CopyTo(this.sendBuffer, 0);
+									//this.Send();
+								}));
                                 break;
                             }
                     }
