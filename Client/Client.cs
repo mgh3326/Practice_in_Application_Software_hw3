@@ -378,33 +378,33 @@ namespace Client
                 ohoh_array[i] = 0;
 
 
-            //MessageBox.Show("AAAA");
+			//MessageBox.Show("AAAA");
 
-            //nRead = this.m_networkstream.Read(readBuffer, 0, 1024*1024 * 4);//여기서 멈춰있나
-            //MessageBox.Show("일단 완료!");
-            //Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
-            //switch ((int)packet.Type)
-            //{
-            //    case (int)PacketType.업로드:
-            //        {
-            //            this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
-            //            this.Invoke(new MethodInvoker(delegate ()
-            //            {
-            //                ListBoxSearch.Items.Clear();
+			//nRead = this.m_networkstream.Read(readBuffer, 0, 1024*1024 * 4);//여기서 멈춰있나
+			MessageBox.Show("전송 완료!");
+			//Packet packet = (Packet)Packet.Desserialize(this.readBuffer);//이거 까지 올려야되나
+			//switch ((int)packet.Type)
+			//{
+			//    case (int)PacketType.업로드:
+			//        {
+			//            this.m_searchClass = (Search)Packet.Desserialize(this.readBuffer);
+			//            this.Invoke(new MethodInvoker(delegate ()
+			//            {
+			//                ListBoxSearch.Items.Clear();
 
-            //                foreach (string ohho in m_searchClass.m_list)
-            //                {
-            //                    ListBoxSearch.Items.Add(ohho);
-            //                }
-            //            }));
-            //            break;
-            //        }
-            //}
-        }
+			//                foreach (string ohho in m_searchClass.m_list)
+			//                {
+			//                    ListBoxSearch.Items.Add(ohho);
+			//                }
+			//            }));
+			//            break;
+			//        }
+			//}
+		}
 
         private void buttonProfileEdit_Click(object sender, EventArgs e)
         {
-
+			MessageBox.Show("프로필이 수정되었습니다.");
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -413,5 +413,24 @@ namespace Client
             this.m_networkstream.Close();
             this.m_thread.Abort();
         }
-    }
+
+		private void pictureBoxProfileImage_Click(object sender, EventArgs e)
+		{
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				//MessageBox.Show(ofd.FileName);
+				m_fileStream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
+				pictureBoxProfileImage.Image = System.Drawing.Image.FromFile(ofd.FileName);
+
+				//Image img = System.Drawing.Image.FromStream(m_fileStream);
+				//MessageBox.Show(ofd.SafeFileName);
+				//img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\myImage");
+				////byte[] buff = System.IO.File.ReadAllBytes(ofd.FileName);
+				////System.IO.MemoryStream ms = new System.IO.MemoryStream(buff);
+				//MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\myImage.Jpeg");
+
+				ofd.FileName = "";
+			}
+		}
+	}
 }

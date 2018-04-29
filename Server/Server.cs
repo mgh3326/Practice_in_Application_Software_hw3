@@ -222,7 +222,7 @@ namespace Server
                                         Login loginClass = new Login();
                                         loginClass.Type = (int)PacketType.로그인;
                                         loginClass.Data = 1;
-                                        loginClass.str = "가입을 먼저 부탁하오";
+                                        loginClass.str = "ID 또는 PW가 잘못되었습니다.\n계정이 없다면 회원가입 버튼을 통해 계정을 만드십시오!";
                                         Packet.Serialize(loginClass).CopyTo(this.sendBuffer, 0);
                                         this.Send();
                                     }
@@ -258,6 +258,7 @@ namespace Server
                             }
                         case (int)PacketType.업로드:
                             {
+
                                 this.m_uploadClass = (Upload)Packet.Desserialize(this.readBuffer);
                                 int a = 0;
                                 this.Invoke(new MethodInvoker(delegate ()
@@ -271,10 +272,10 @@ namespace Server
                                             fileStream.WriteByte(m_uploadClass.m_byte[i]);
                                         }
                                         Image img = System.Drawing.Image.FromStream(fileStream);
-                                        img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
-                                        MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\" + m_uploadClass.m_filename);
-
-                                    }
+										
+										img.Save(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\" + this.m_loginClass.m_strID + "\\" + m_uploadClass.m_filename);
+									}
+                                    MessageBox.Show("수신 완료\n경로 : " + Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\test\\" + this.m_loginClass.m_strID + "\\" + m_uploadClass.m_filename);
 
 
 
